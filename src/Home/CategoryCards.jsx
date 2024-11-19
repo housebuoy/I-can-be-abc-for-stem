@@ -4,8 +4,7 @@ import ProductCard from "./ProductCard";
 import { productData } from "../components/product-card-data";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
-import ABCpreview from "../../public/images/ProductImages/ABCpreview.jpg"
-import check from "../../public/bullet/check.png"
+import ABCpreview from "../../public/images/ProductImages/ABC_.jpg"
 
 // Import Poppins font
 const poppins = Poppins({
@@ -56,11 +55,11 @@ const CategoryCards = () => {
                 absolute bottom-4 left-3 w-[90%]"
             >
               <span
-  className="text-[20px] text-white font-medium
-    md:text-xl lg:text-lg bg-black/20 backdrop-blur-sm px-2 py-1 rounded-md"   
-> 
-  {product.category}
-</span>
+                className="text-[20px] text-white font-medium
+                  md:text-xl lg:text-lg bg-black/20 backdrop-blur-sm px-2 py-1 rounded-md"   
+              > 
+                {product.category}
+              </span>
 
               <span>
                 <BsArrowRightShort className="text-[36px] text-indigo-600" />

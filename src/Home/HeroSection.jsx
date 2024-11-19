@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {Lora, Poppins, Stoke} from 'next/font/google'
+import {Poppins} from 'next/font/google'
 import heroimage1 from '../../public/images/heroimages/hero-02.png'
 import heroimage2 from '../../public/images/heroimages/hero-01.png'
 
@@ -12,10 +12,6 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800'], 
 });
 
-const lora = Lora({
-  subsets: ['latin'],
-  weight: ['400',], 
-});
 
 
 const HeroSection = () => {

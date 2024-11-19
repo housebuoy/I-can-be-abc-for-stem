@@ -15,9 +15,9 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      listStyleImage: {
-        custom: "url('./public/bullet/check.png')",
-      },
+      backgroundImage: {
+        'footer-texture': "url(/public/images/product.svg)"
+      }
     },
   },
   plugins: [],
