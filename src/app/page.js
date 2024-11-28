@@ -11,7 +11,7 @@ import {Poppins} from 'next/font/google'
 
 export default function Home() {
   return (
-    <main className={`${poppins.className} bg-white pb-10`}>
+    <main className={`${poppins.className} bg-white pb-24`}>
       <HeroSection />
       <CategoryCards />
       <ContactSupport />

@@ -6,8 +6,10 @@ import logo from "../../public/images/logo/18.png";
 import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
+import { useCart } from "@/app/Context/CartProvider";
 
 import {Lora, Poppins, Stoke} from 'next/font/google'
+import ShoppingCart from "./ShoppingCart";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -16,10 +18,15 @@ const poppins = Poppins({
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const { cartItems, removeFromCart } = useCart();
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const toggleSideMenuOpen = () => {
+    setSideMenuOpen(!sideMenuOpen)
+  }
 
   return (
     <header className={`${poppins.className} flex items-center justify-between bg-[white] text-black py-2 px-5 sm:px-10 fixed top-0 left-0 w-full z-50 shadow-md font-poppins`}>
@@ -41,7 +48,7 @@ const Header = () => {
       <nav
         className={`${
           menuOpen ? "block" : "hidden"
-        } absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-40 md:flex items-center space-y-4 md:space-y-0 md:space-x-8 py-4 md:py-0 px-10 md:px-0 shadow-md md:shadow-none fontbold`}
+        } absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-40 md:flex items-center space-y-4 md:space-y-0 md:space-x-8 py-4 md:py-0 px-5 md:px-0 shadow-md md:shadow-none fontbold`}
       >
         <Link href="/" className="block md:inline hover:underline font-poppins">
           Home
@@ -54,7 +61,7 @@ const Header = () => {
         </Link>
 
         {/* Search Bar and Cart for Mobile */}
-        <div className="flex items-center justify-between md:hidden  bg-transparent  font-poppins gap-6">
+        <div className="flex items-center justify-between md:hidden  bg-transparent  font-poppins gap-2">
             <div className="border border-gray-500 p-2 rounded-md flex items-center w-full justify-between bg-transparent ">
                 <input
                     type="text"
@@ -65,9 +72,15 @@ const Header = () => {
                     <FaSearch />
                 </button>
             </div>
-            <Link href="/cart" className="border border-gray-500 p-2 rounded-md">
-                <FaShoppingCart className="text-gray-500" size={24} />
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/account" className="border border-gray-500 p-2 rounded-md">
+                  <MdAccountCircle className="text-gray-500" size={24} />
+              </Link>
+              <Link href="/cart" className="border border-gray-500 p-2 rounded-md">
+                  <FaShoppingCart className="text-gray-500" size={24} />
+              </Link>
+            </div>
+            
         </div>
       </nav>
 
@@ -89,10 +102,19 @@ const Header = () => {
       <Link href="/account" className="border border-gray-500 p-2 rounded-md">
           <MdAccountCircle size={30} />
         </Link>
-        <Link href="/cart" className="border border-gray-500 p-2 rounded-md">
-          <FaShoppingCart size={28} />
-        </Link>
+        <div className="relative">
+          <button className="border border-gray-500 py-2 rounded-md px-2 relative" onClick={toggleSideMenuOpen}>
+            <FaShoppingCart size={28} />
+          </button>
+          <p className="absolute -top-1 right-0 bg-indigo-600 text-white rounded-full px-1 text-xs font-bold">{cartItems.length}</p>
+        </div>
+        
       </div>
+      {sideMenuOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
+          <ShoppingCart onClose={toggleSideMenuOpen} /> {/* Close button handling */}
+        </div>
+      )}
     </header>
   );
 };

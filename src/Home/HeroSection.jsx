@@ -32,7 +32,7 @@ const HeroSection = () => {
             <span className="text-blue-900 font-bold">A</span>
             <span className="text-green-600 font-bold">M</span>
           </h1>
-          <button className="bg-indigo-600 px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">Shop Now</button>
+          <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">Shop Now</button>
         </div>
         {/* <div className="flex flex-row md:flex-col"> */}
           {/* Floating Images */}

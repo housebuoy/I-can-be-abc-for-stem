@@ -2,7 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from '../components/Header';
 import Footer from "@/components/Footer";
-
+import { CartProvider } from "@/app/Context/CartProvider";
 import {Poppins} from 'next/font/google'
 
 const poppins = Poppins({
@@ -28,14 +28,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
-      >
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <CartProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
+        >
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </CartProvider>
   );
 }
