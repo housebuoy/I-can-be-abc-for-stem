@@ -71,6 +71,17 @@ const ProductPage = ({ params: paramsPromise }) => {
   const isSizeAvailable = (size) => product.sizes?.includes(size);
   const isColorAvailable = (color) => product.colors?.includes(color);
 
+  const handleCopyLink = async () => {
+    try {
+      const currentUrl = window.location.href; // Get the current page URL
+      await navigator.clipboard.writeText(currentUrl); // Copy the URL to clipboard
+      alert("Link copied to clipboard!"); // Notify the user
+    } catch (error) {
+      console.error("Failed to copy the link: ", error);
+      alert("Failed to copy the link. Please try again.");
+    }
+  };
+
   return (
     <div className="container mx-auto px-6 lg:px-10 pt-28">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-center">
@@ -139,7 +150,7 @@ const ProductPage = ({ params: paramsPromise }) => {
           
 
           {/* Quantity and Actions */}
-          <div className="flex items-center mt-4 gap-4">
+          <div className="flex items-center justify-center md:justify-start mt-4 gap-4">
             <div className="flex items-center border border-indigo-600 rounded overflow-hidden">
               <button
                 className="px-4 py-2 hover:bg-indigo-600 hover:text-white border-r text-lg font-bold text-indigo-600"
@@ -156,7 +167,7 @@ const ProductPage = ({ params: paramsPromise }) => {
               </button>
             </div>
             <button
-              className="bg-indigo-600 text-white px-4 sm:px-2 lg:px-4 py-2 rounded"
+              className="bg-indigo-600 text-white px-4 sm:px-2 lg:px-4 py-2 rounded hidden md:block"
               // disabled={!selectedSize || !selectedColor}
               onClick={() =>                
                 addToCart(product.code, quantity)
@@ -164,13 +175,22 @@ const ProductPage = ({ params: paramsPromise }) => {
             >
               Add to Cart
             </button>
-            <button className="border border-indigo-600 text-indigo-600 px-6 py-2 rounded" onClick={()=> console.log(relatedProducts)}>
+            <button className="border border-indigo-600 text-indigo-600 px-6 py-2 rounded" onClick={handleCopyLink}>
               Share
             </button>
           </div>
-          <button className="px-36 bg-indigo-600 text-white py-2 rounded mt-4">
-                Checkout
-              </button>
+          <button
+            className="bg-indigo-600 text-white px-24 w-full lg:px-4 py-2 rounded block md:hidden mt-2"
+            // disabled={!selectedSize || !selectedColor}
+            onClick={() =>                
+              addToCart(product.code, quantity)
+            }
+          >
+            Add to Cart
+          </button>
+          <button className="w-full md:w-auto md:px-36 bg-indigo-600 text-white py-2 rounded mt-2 md:mt-4">
+            Checkout
+          </button>
         </div>
       </div>
 

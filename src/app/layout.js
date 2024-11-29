@@ -1,13 +1,12 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from '../components/Header';
-import Footer from "@/components/Footer";
+import LayoutWrapper from "@/app/ClientLayout";
 import { CartProvider } from "@/app/Context/CartProvider";
-import {Poppins} from 'next/font/google'
+import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400',], // Add desired font weights
+  subsets: ["latin"],
+  weight: ["400"], // Add desired font weights
 });
 
 const geistSans = localFont({
@@ -23,7 +22,7 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "I Can Be ABC For STEM",
-  description: "Number one STEAM shop"
+  description: "Number one STEAM shop",
 };
 
 export default function RootLayout({ children }) {
@@ -33,9 +32,7 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
         >
-          <Header />
-          {children}
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </body>
       </html>
     </CartProvider>

@@ -73,12 +73,16 @@ const Header = () => {
                 </button>
             </div>
             <div className="flex gap-2">
-              <Link href="/account" className="border border-gray-500 p-2 rounded-md">
-                  <MdAccountCircle className="text-gray-500" size={24} />
+              <Link href="/account" className="border border-indigo-600 p-2 rounded-md">
+                  <MdAccountCircle className="text-indigo-600" size={24} />
               </Link>
-              <Link href="/cart" className="border border-gray-500 p-2 rounded-md">
-                  <FaShoppingCart className="text-gray-500" size={24} />
-              </Link>
+              <div className="relative">
+                <button onClick={toggleSideMenuOpen} className="border border-indigo-600 p-2 rounded-md">
+                  <FaShoppingCart className="text-indigo-600" size={24} />
+                </button>
+                <p className="absolute -top-1 right-0 bg-indigo-600 text-white rounded-full px-1 text-xs font-bold">{cartItems.length}</p>
+              </div>
+              
             </div>
             
         </div>
@@ -99,7 +103,7 @@ const Header = () => {
 
       {/* Cart for Desktop */}
       <div className="hidden md:flex items-center text-indigo-600 gap-2">
-      <Link href="/account" className="border border-gray-500 p-2 rounded-md">
+      <Link href="/signup" className="border border-gray-500 p-2 rounded-md">
           <MdAccountCircle size={30} />
         </Link>
         <div className="relative">
