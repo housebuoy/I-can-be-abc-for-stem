@@ -5,12 +5,12 @@
 
 export const productData = [
     {
-        image: "/images/logo/logo.png",
+        image: "/images/ProductImages/ABC.jpg",
         category: "STEAM Books",
         id: Math.random()
     },
     {
-        image: "/images/ProductImages/ABC.jpg",
+        image: "/images/ProductImages/stemkit.jpg",
         category: "STEAM Kits",
         id: Math.random()
     },

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import Link from "next/link";
-import logo from '/public/images/logo/logo.png'
+// import logo from '/public/images/logo/logo.png'
 // import kidsathome from '../../public/images/logo/KIDSATHOME-02.png'
 import kidsathome from '../../public/images/logo/KIDSATHOME-01.png'
 import SubscriptionForm from './SubscriptionForm';
@@ -23,7 +23,7 @@ const Footer = () => {
     <footer className="bg-[url(../../public/images/product.svg)] bg-cover bg-center min-h-96 bg-white border-t border-[#d6e1ff] px-14 text-gray-700 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
         <div className="flex flex-col items-center md:items-start">
             <Image 
-                src={logo}
+                src="/images/logo/logo.png"
                 width={140} 
                 height={140} 
                 alt="logo"
