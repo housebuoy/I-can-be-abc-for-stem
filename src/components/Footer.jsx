@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import Link from "next/link";
-import logo from '../../public/images/logo/logo.png'
+import logo from '/public/images/logo/logo.png'
 // import kidsathome from '../../public/images/logo/KIDSATHOME-02.png'
 import kidsathome from '../../public/images/logo/KIDSATHOME-01.png'
 import SubscriptionForm from './SubscriptionForm';

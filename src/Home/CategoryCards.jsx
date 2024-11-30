@@ -4,7 +4,8 @@ import ProductCard from "./ProductCard";
 import { productData } from "../components/product-card-data";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
-import ABCpreview from "../../public/images/ProductImages/ABC_.jpg"
+// import abcImage from '../../public/images/ProductImages/abcbook.jpg';
+
 
 // Import Poppins font
 const poppins = Poppins({
@@ -71,7 +72,7 @@ const CategoryCards = () => {
       <section className=" mt-24  flex flex-col md:flex-row-reverse  justify-between gap-10" data-aos="fade-up"
      data-aos-anchor-placement="center-bottom">
       <Image 
-          src={ABCpreview}
+          src="/images/ProductImages/abcbook.jpg"
           alt="fjfj"
           width={550}
           height={450}
