@@ -113,10 +113,10 @@ const SignUpPage = () => {
                     <FcGoogle className='text-3xl'/>
                     <p className='text-center'>Sign Up With Google</p>                
               </button>
-              <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white  flex items-center text-center justify-center gap-5" onClick={() => signIn("facebook")}>
+              {/* <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white  flex items-center text-center justify-center gap-5" onClick={() => signIn("facebook")}>
                 <FaFacebookSquare className='text-3xl'/>
                 <p className='text-center'>Sign Up With Facebook</p>                
-              </button>
+              </button> */}
 
             </div>
             <p className='mt-2 text-gray-600'>Already have an account? <Link href="/login" className='text-indigo-600'>Login</Link></p>
