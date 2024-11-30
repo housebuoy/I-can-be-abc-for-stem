@@ -7,6 +7,7 @@ import React from 'react'
           <Image
             src={props.image}
             alt={props.category}
+            fill
             // width={100}
             className="object-fit w-[100%] h-[100%] rounded-lg"
             data-aos="zoom-in"

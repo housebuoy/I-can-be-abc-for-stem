@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../../public/images/logo/18.png";
+// import logo from "/images/logo/18.png";
 import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
@@ -33,7 +33,7 @@ const Header = () => {
       {/* Logo */}
       <div className="flex items-end space-x-1 ml-1 sm:ml-4">
         <Link href="/">
-          <Image src={logo} alt="Store Logo" width={70} height={70} priority />
+          <Image src="/images/logo/18.png" alt="Store Logo" width={70} height={70} priority />
         </Link>
       </div>
 
