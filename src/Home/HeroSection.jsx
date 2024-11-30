@@ -4,8 +4,8 @@ import { useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {Poppins} from 'next/font/google'
-import heroimage1 from '../../public/images/heroimages/hero-02.png'
-import heroimage2 from '../../public/images/heroimages/hero-01.png'
+// import heroimage1 from '../../public/images/heroimages/hero-02.png'
+// import heroimage2 from '../../public/images/heroimages/hero-01.png'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -69,9 +69,10 @@ const HeroSection = () => {
               xl:right-40 xl:bottom-100" data-aos="zoom-in"
             >
               <Image
-                src={heroimage1}
-                // width={170}
-                // height={170} 
+                src="/images/heroimages/hero-02.png"
+                width={170}
+                height={170} 
+                // full
                 alt="image"
                 className="rounded-full w-32 md:w-48 lg:w-52"
               />
@@ -85,9 +86,10 @@ const HeroSection = () => {
               xl:right-72 xl:bottom-32" data-aos="zoom-in"
             >
               <Image
-                src={heroimage2}
-                // width={300}
-                // height={300} 
+                src="/images/heroimages/hero-01.png"
+                width={300}
+                height={300} 
+                // full
                 alt="image"
                 className="rounded-full w-56 md:w-72 lg:w-80"
               />

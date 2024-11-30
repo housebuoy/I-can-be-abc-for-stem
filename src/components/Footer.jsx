@@ -3,7 +3,7 @@ import React from 'react'
 import Link from "next/link";
 // import logo from '/public/images/logo/logo.png'
 // import kidsathome from '../../public/images/logo/KIDSATHOME-02.png'
-import kidsathome from '../../public/images/logo/KIDSATHOME-01.png'
+// import kidsathome from '../../public/images/logo/KIDSATHOME-01.png'
 import SubscriptionForm from './SubscriptionForm';
 import { FaFacebookF, FaTiktok, FaGlobeAfrica } from 'react-icons/fa';
 import { BsInstagram, BsDribbble, BsLinkedin } from 'react-icons/bs';
@@ -51,9 +51,9 @@ const Footer = () => {
                             {/* <p>Kidsathome Educational Centre</p> */}
                         </div> 
                     <Image 
-                        src={kidsathome}
+                        src="/images/logo/KIDSATHOME-01.png"
                         width={200} 
-                        // height={60} 
+                        height={60} 
                         alt="logo"
                         priority
                     />
