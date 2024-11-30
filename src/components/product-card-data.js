@@ -5,7 +5,7 @@
 
 export const productData = [
     {
-        image: "/images/ProductImages/ABC.jpg",
+        image: "/images/ProductImages/abc.jpg",
         category: "STEAM Books",
         id: Math.random()
     },
@@ -15,7 +15,7 @@ export const productData = [
         id: Math.random()
     },
     {
-        image: "/images/ProductImages/stemkit.jpg",
+        image: "/images/ProductImages/veste.png",
         category: "STEAM Wear",
         id: Math.random()
     },
