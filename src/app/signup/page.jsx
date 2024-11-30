@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import Link from 'next/link';
-
+import { signIn } from "next-auth/react";
 
 const SignUpPage = () => {
 
@@ -109,11 +109,11 @@ const SignUpPage = () => {
           <div className="mt-2 text-center">
             <p className="text-sm text-gray-600">Or sign up with</p>
             <div className="flex flex-col justify-center mt-2 gap-y-2">
-                <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white flex items-center text-center justify-center gap-5">
+                <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white flex items-center text-center justify-center gap-5" onClick={() => signIn("google")}>
                     <FcGoogle className='text-3xl'/>
                     <p className='text-center'>Sign Up With Google</p>                
               </button>
-              <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white  flex items-center text-center justify-center gap-5">
+              <button className="bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md shadow hover:bg-indigo-600 hover:text-white  flex items-center text-center justify-center gap-5" onClick={() => signIn("facebook")}>
                 <FaFacebookSquare className='text-3xl'/>
                 <p className='text-center'>Sign Up With Facebook</p>                
               </button>
