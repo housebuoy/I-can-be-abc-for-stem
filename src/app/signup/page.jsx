@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useCart } from "../../app/Context/CartProvider";
 import { createUserWithEmailAndPassword, updateProfile,  } from 'firebase/auth'
 import { auth } from '../../../firebase';
+import { useRouter } from 'next/navigation'; 
 
 const SignUpPage = () => {
 
@@ -18,6 +19,7 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const router = useRouter(); 
 
 
     const togglePasswordVisibility = () => {
@@ -65,7 +67,7 @@ const SignUpPage = () => {
     
           // Update the user's profile name
           await updateProfile(userCredential.user, { displayName: fullName });
-    
+          router.push('/shop');
           setSuccess('Account created successfully! You can now log in.');
         } catch (error) {
           console.error('Error signing up:', error);

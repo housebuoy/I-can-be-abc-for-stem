@@ -49,7 +49,7 @@ const AccountDropdown = ({ user, size }) => {
       {/* Account Icon */}
       <button onClick={toggleDropdown} className="flex items-center space-x-2">
         {user?.displayName ? (
-          <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 text-white font-bold rounded-full">
+          <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 text-white font-bold rounded-md">
             {getInitials(user.displayName)}
           </div>
         ) : (

@@ -40,7 +40,7 @@ const LoginPage = () => {
                 console.log('Logged in as:', userCredential.user);
 
                 // Redirect user to the dashboard or home page after successful login
-                router.push('/dashboard');  // Adjust the route as per your project structure
+                router.push('/shop');  // Adjust the route as per your project structure
             } catch (error) {
                 console.error('Error logging in:', error);
                 setError(error.message || 'Failed to log in. Please try again.');

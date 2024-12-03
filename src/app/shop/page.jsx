@@ -20,6 +20,17 @@ const Shop = () => {
 
   const { addToCart } = useCart();
 
+  const handleCopyLink = async () => {
+    try {
+      const currentUrl = window.location.href; // Get the current page URL
+      await navigator.clipboard.writeText(currentUrl); // Copy the URL to clipboard
+      alert("Link copied to clipboard!"); // Notify the user
+    } catch (error) {
+      console.error("Failed to copy the link: ", error);
+      alert("Failed to copy the link. Please try again.");
+    }
+  };
+
   // Fetch all products when the component mounts
   useEffect(() => {
     async function fetchProducts() {
@@ -102,7 +113,7 @@ const Shop = () => {
                   )}
                   <div className="absolute inset-0 bg-gray-800 bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-opacity h-[100%] w-[100%] top-[0%] left-[0%]">
                     <div className="opacity-0 group-hover:opacity-100 transition">
-                      <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
+                      <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1" onClick={handleCopyLink}>
                         <FaShareAlt />
                       </button>
                       <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
