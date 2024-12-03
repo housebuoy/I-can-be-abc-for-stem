@@ -2,11 +2,8 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 import signUpImage from '../../../public/images/signup/side-picture.svg'
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookSquare } from "react-icons/fa";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import Link from 'next/link';
-import { signIn } from "next-auth/react";
 import { useCart } from "../../app/Context/CartProvider";
 import { createUserWithEmailAndPassword, updateProfile,  } from 'firebase/auth'
 import { auth } from '../../../firebase';
@@ -64,10 +61,9 @@ const SignUpPage = () => {
       
       if (email !== "" || fullName !== "" || password !== "") {        
         try {
-          // Create a new user with email and password
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
-          // Update the user's profile with their full name
+          // Update the user's profile name
           await updateProfile(userCredential.user, { displayName: fullName });
     
           setSuccess('Account created successfully! You can now log in.');
@@ -92,7 +88,7 @@ const SignUpPage = () => {
       <div
         className="flex-1 sm:flex flex-col justify-center items-center text-white px-10 bg-indigo-600 hidden"
       >
-        <h1 className="text-3xl font-bold mb-4 text-center">Join us in exploring the future of <br /> STEM!</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">Explore the future of <br /> STEM!</h1>
         {/* <p className="mb-6">Join us in exploring innovative opportunities.</p> */}
         <Image
           src={signUpImage}

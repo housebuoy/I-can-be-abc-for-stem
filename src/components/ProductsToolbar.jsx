@@ -7,6 +7,7 @@ import { getCategories } from "../sanity/schemaTypes/queries";
 import { getProducts } from "../sanity/schemaTypes/queries";
 import { client } from "../sanity/lib/client";
 
+
 const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount, resultsPerPage, setResultsPerPage  }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropBarOpen, setIsDropBarOpen] = useState(false);

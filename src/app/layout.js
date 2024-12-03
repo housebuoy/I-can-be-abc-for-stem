@@ -3,6 +3,7 @@ import "./globals.css";
 import LayoutWrapper from "@/app/ClientLayout";
 import { CartProvider } from "@/app/Context/CartProvider";
 import { Poppins } from "next/font/google";
+import { SearchProvider } from "@/app/Context/SearchContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,13 +29,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <CartProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
-        >
-          <LayoutWrapper>{children}</LayoutWrapper>
-        </body>
-      </html>
+      <SearchProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
+          >
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </body>
+        </html>
+      </SearchProvider>
     </CartProvider>
   );
 }

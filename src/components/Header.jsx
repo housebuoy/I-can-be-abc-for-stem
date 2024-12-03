@@ -8,7 +8,7 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
 import { useCart } from "@/app/Context/CartProvider";
 import { auth } from "../../firebase";
-
+import { useSearch } from "@/app/Context/SearchContext";
 import {Lora, Poppins, Stoke} from 'next/font/google'
 import ShoppingCart from "./ShoppingCart";
 
@@ -22,6 +22,20 @@ const Header = () => {
   const { cartItems, removeFromCart } = useCart();
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const { setSearchQuery } = useSearch();
+  const [localSearch, setLocalSearch] = useState("");
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearchQuery(localSearch);
+    console.log(localSearch) // Update the global search query
+  };
+
+  const handleSearch = () => {
+    console.log("handleSearchSubmit")
+  }
+  
+
   useEffect(() => {
     // Listen to Firebase Auth changes
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -74,14 +88,21 @@ const Header = () => {
         {/* Search Bar and Cart for Mobile */}
         <div className="flex items-center justify-between md:hidden  bg-transparent  font-poppins gap-2">
             <div className="border border-gray-500 p-2 rounded-md flex items-center w-full justify-between bg-transparent ">
+              <form onSubmit={handleSearchSubmit} className="flex items-center">
                 <input
-                    type="text"
-                    placeholder="Search for products"
-                    className="bg-transparent text-gray-700 outline-none placeholder-gray-500 w-full"
+                  type="text"
+                  placeholder="Search for products"
+                  value={localSearch}
+                  onChange={(e) => setLocalSearch(e.target.value)}
+                  className="border p-2 rounded-l-md w-full text-gray-700"
                 />
-                <button className="text-gray-500">
-                    <FaSearch />
+                <button
+                  type="submit"
+                  className="bg-indigo-600 text-white p-2 rounded-r-md"
+                >
+                  <FaSearch />
                 </button>
+              </form>
             </div>
             <div className="flex gap-2">
               <div className="relative">
@@ -96,17 +117,19 @@ const Header = () => {
         </div>
       </nav>
 
-      <div className="hidden items-center justify-between md:flex  bg-transparent  font-poppins gap-6 space-x-5">
-            <div className="border border-gray-500 p-2 rounded-md flex items-center w-full space-x-10 justify-between bg-transparent ">
+      <div className="hidden items-center justify-between md:flex  bg-transparent  font-poppins gap-2 space-x-5">
+            <form onSubmit={handleSearchSubmit} className="border border-gray-500 p-2 rounded-md flex items-center w-full space-x-3 justify-between bg-transparent ">
                 <input
                     type="text"
                     placeholder="Search for products"
+                    value={localSearch}
+                    onChange={(e) => setLocalSearch(e.target.value)}
                     className="bg-transparent text-gray-700 outline-none placeholder-gray-500 w-full"
                 />
-                <button className="text-gray-500">
+                <button className="text-gray-500" type="submit">
                     <FaSearch />
                 </button>
-            </div>
+            </form>
         </div>
 
       {/* Cart for Desktop */}
