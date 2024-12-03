@@ -68,7 +68,7 @@ const Shop = () => {
         {filteredProducts.length === 0 ? (
           <p className="text-center text-xl text-gray-600 pt-24">
             No products found for <span className="text-indigo-600">
-              "{searchQuery}".
+              &quot;{searchQuery}&quot;.
             </span>
           </p>
         ) : (
