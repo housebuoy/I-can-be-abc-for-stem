@@ -5,13 +5,31 @@ import { getProductByCode } from "../sanity/schemaTypes/queries";
 import Image from "next/image";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { auth } from "../../firebase"
 
 
 const ShoppingCart = ({ isOpen, onClose }) => {
   const { cartItems, removeFromCart } = useCart();
   const [products, setProducts] = useState([]);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+        router.push("/login"); // Redirect to login if not logged in
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
     const fetchCartProducts = async () => {
       const fetchedProducts = await Promise.all(
         cartItems.map(async (item) => {
@@ -22,10 +40,11 @@ const ShoppingCart = ({ isOpen, onClose }) => {
       setProducts(fetchedProducts);
     };
     fetchCartProducts();
-  }, [cartItems]);
+  },  [cartItems, user]);
 
+  
   const cartTotal = products.reduce((total, item) => total + item.price * item.quantity, 0);
-
+  if (!user) return null;
   return (
     // isOpen && (
       <div className="fixed top-0 right-0 w-96 md:w-2/5  bg-white shadow-lg h-full z-50 px-6 overflow-y-auto">

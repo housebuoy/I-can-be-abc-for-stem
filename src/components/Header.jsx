@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import logo from "/images/logo/18.png";
+import AccountDropdown from "@/components/AccountDropdown";
 import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
 import { useCart } from "@/app/Context/CartProvider";
+import { auth } from "../../firebase";
 
 import {Lora, Poppins, Stoke} from 'next/font/google'
 import ShoppingCart from "./ShoppingCart";
@@ -20,6 +21,16 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { cartItems, removeFromCart } = useCart();
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // Listen to Firebase Auth changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -73,16 +84,13 @@ const Header = () => {
                 </button>
             </div>
             <div className="flex gap-2">
-              <Link href="/account" className="border border-indigo-600 p-2 rounded-md">
-                  <MdAccountCircle className="text-indigo-600" size={24} />
-              </Link>
               <div className="relative">
-                <button onClick={toggleSideMenuOpen} className="border border-indigo-600 p-2 rounded-md">
-                  <FaShoppingCart className="text-indigo-600" size={24} />
+                <button onClick={toggleSideMenuOpen} className="border border-gray-500 p-2 rounded-md">
+                  <FaShoppingCart className="text-indigo-600" size={26} />
                 </button>
                 <p className="absolute -top-1 right-0 bg-indigo-600 text-white rounded-full px-1 text-xs font-bold">{cartItems.length}</p>
               </div>
-              
+              <AccountDropdown user={user} size={30} />
             </div>
             
         </div>
@@ -103,16 +111,16 @@ const Header = () => {
 
       {/* Cart for Desktop */}
       <div className="hidden md:flex items-center text-indigo-600 gap-2">
-      <Link href="/signup" className="border border-gray-500 p-2 rounded-md">
+      {/* <Link href="/signup" className="border border-gray-500 p-2 rounded-md">
           <MdAccountCircle size={30} />
-        </Link>
+        </Link> */}
         <div className="relative">
           <button className="border border-gray-500 py-2 rounded-md px-2 relative" onClick={toggleSideMenuOpen}>
             <FaShoppingCart size={28} />
           </button>
           <p className="absolute -top-1 right-0 bg-indigo-600 text-white rounded-full px-1 text-xs font-bold">{cartItems.length}</p>
         </div>
-        
+        <AccountDropdown user={user} size={36}/>
       </div>
       {sideMenuOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40">
