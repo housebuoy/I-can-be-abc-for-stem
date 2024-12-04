@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 import { productData } from "../components/product-card-data";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 // import abcImage from '../../public/images/ProductImages/abcbook.jpg';
 
 
@@ -33,7 +34,7 @@ const CategoryCards = () => {
           className="flex flex-row gap-2 items-center text-xs text-indigo-600
           font-semibold tracking-[2px]"
         >
-          <button>VIEW ALL PRODUCTS</button>
+          <Link href="/shop">VIEW ALL PRODUCTS</Link>
           <span>
             <BsArrowRightShort className="text-[25px]" />
           </span>

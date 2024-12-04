@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
 const Footer = () => {
   return (
     <footer className="bg-[url(../../public/images/product.svg)] bg-cover bg-center min-h-96 bg-white border-t border-[#d6e1ff] px-14 text-gray-700 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
-        <div className="flex flex-col items-center md:items-start">
+        <Link href="/" className="flex flex-col items-center md:items-start">
             <Image 
                 src="/images/logo/logo.png"
                 width={140} 
@@ -30,7 +30,7 @@ const Footer = () => {
                 priority
             />
             <SubscriptionForm />
-        </div>
+        </Link>
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h2 className="font-semibold text-2xl">Website Map</h2>
             <div className="flex md:flex-col gap-x-5 flex-row gap-y-3 mt-2">
@@ -45,7 +45,7 @@ const Footer = () => {
                 </Link>
             </div>
             <div className="mt-16 flex flex-col items-center md:items-start">
-                <div className="gap-2 items-end">
+                <Link href="https://www.kidsathomesp.com" className="gap-2 items-end">
                         <div className='items-start'>
                             <p className="font-semibold">Powered by</p>
                             {/* <p>Kidsathome Educational Centre</p> */}
@@ -61,7 +61,7 @@ const Footer = () => {
                         {/* <p className="font-semibold">Powered by</p> */}
                         {/* <p>Kidsathome Educational Centre</p> */}
                     </div>                
-                </div>  
+                </Link>  
                 <div className="flex justify-center items-center mt-5">
                     <p>All rights reserved © {currentYear}</p>
                 </div> 
