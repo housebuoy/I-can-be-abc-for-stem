@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+const { MongoClient } = require("mongodb");
 
 export default async function handler(req, res) {
   const { method, query, body } = req;
@@ -15,9 +15,7 @@ export default async function handler(req, res) {
         if (!userId) return res.status(400).json({ message: "User ID is required" });
 
         const cart = await cartsCollection.findOne({ userId });
-        if (!cart) return res.status(404).json({ message: "Cart not found" });
-
-        return res.status(200).json(cart);
+        return res.status(200).json(cart || { cartItems: [] });
       }
 
       case "POST": {
@@ -37,7 +35,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: `Method ${method} Not Allowed` });
     }
   } catch (error) {
-    console.error("Error in /api/cart:", error);
+    console.error("Error in /api/cart handler:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   } finally {
     await client.close();

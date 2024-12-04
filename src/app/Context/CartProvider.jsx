@@ -14,13 +14,30 @@ export const CartProvider = ({ children }) => {
   const fetchCart = async (userId) => {
     try {
       const response = await fetch(`/api/cart?userId=${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch cart");
+  
       const data = await response.json();
-      setCartItems(data.cartItems || []); // Initialize cart
+      setCartItems((prevCartItems) => {
+        // Merge local cart with database cart
+        const dbCartItems = data.cartItems || [];
+        const mergedCart = [...prevCartItems];
+  
+        dbCartItems.forEach((dbItem) => {
+          const existingItem = mergedCart.find((item) => item.code === dbItem.code);
+          if (existingItem) {
+            existingItem.quantity = Math.max(existingItem.quantity, dbItem.quantity);
+          } else {
+            mergedCart.push(dbItem);
+          }
+        });
+  
+        return mergedCart;
+      });
     } catch (error) {
       console.error("Error fetching cart:", error);
     }
   };
-
+  
   // Save the cart to MongoDB
   const saveCart = async (cartItems) => {
     try {
@@ -72,10 +89,16 @@ export const CartProvider = ({ children }) => {
 
   // Save cart to MongoDB whenever it changes
   useEffect(() => {
+    let saveTimeout;
     if (userId) {
-      saveCart(cartItems);
+      saveTimeout = setTimeout(() => {
+        saveCart(cartItems);
+      }, 500); // Save cart after 500ms delay
     }
+  
+    return () => clearTimeout(saveTimeout); // Cleanup timeout
   }, [cartItems, userId]);
+  
 
   return (
     <CartContext.Provider

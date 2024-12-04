@@ -87,23 +87,21 @@ const Header = () => {
 
         {/* Search Bar and Cart for Mobile */}
         <div className="flex items-center justify-between md:hidden  bg-transparent  font-poppins gap-2">
-            <div className="border border-gray-500 p-2 rounded-md flex items-center w-full justify-between bg-transparent ">
-              <form onSubmit={handleSearchSubmit} className="flex items-center">
+            <form onSubmit={handleSearchSubmit} className="border border-gray-500 p-2 rounded-md flex items-center w-full justify-between bg-transparent ">
                 <input
                   type="text"
                   placeholder="Search for products"
                   value={localSearch}
                   onChange={(e) => setLocalSearch(e.target.value)}
-                  className="border p-2 rounded-l-md w-full text-gray-700"
+                  className="bg-transparent text-gray-700 outline-none placeholder-gray-500 w-full"
                 />
                 <button
                   type="submit"
-                  className="bg-indigo-600 text-white p-2 rounded-r-md"
+                  className="text-gray-500 text-lg"
                 >
                   <FaSearch />
                 </button>
-              </form>
-            </div>
+            </form>
             <div className="flex gap-2">
               <div className="relative">
                 <button onClick={toggleSideMenuOpen} className="border border-gray-500 p-2 rounded-md">
