@@ -76,15 +76,15 @@ const Footer = () => {
             </ul>
             <div className="flex justify-center items-center gap-4 mt-16 flex-wrap">
                 {socialIcons.map((item) => (
-                    <a
-                    key={item.id}
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-12 h-12 border border-gray-800 rounded-md hover:bg-indigo-600 hover:text-white transition-all duration-300"
-                    >
-                    {item.icon}
-                    </a>
+                    <Link
+                        key={item.id}
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-12 h-12 border border-gray-800 rounded-md hover:bg-indigo-600 hover:text-white transition-all duration-300"
+                        >
+                        {item.icon}
+                    </Link>
                 ))}
             </div>
         </div>

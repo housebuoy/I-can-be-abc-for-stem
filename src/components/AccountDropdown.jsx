@@ -77,11 +77,23 @@ const AccountDropdown = ({ user, size }) => {
               >
                 Track Order
               </Link>
+              <Link
+                href="/orders"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Transaction History
+              </Link>
               <button
                 onClick={handleLogout}
                 className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
                 Logout
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Delete Account
               </button>
             </>
           ) : (

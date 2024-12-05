@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+
 export default function NotFound() {
     return (
       <div
@@ -14,7 +17,7 @@ export default function NotFound() {
         <div>
           <h1 style={{ fontSize: "3rem", fontWeight: "bold" }}>404</h1>
           <p style={{ fontSize: "1.5rem" }}>Page Not Found</p>
-          <a
+          <Link
             href="/"
             style={{
               marginTop: "1rem",
@@ -27,7 +30,7 @@ export default function NotFound() {
             }}
           >
             Go Back Home
-          </a>
+          </Link>
         </div>
       </div>
     );
