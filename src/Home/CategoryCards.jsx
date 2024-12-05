@@ -49,22 +49,22 @@ const CategoryCards = () => {
             image={product.image}
             category={product.category}
             key={product.id}
-            className="relative w-full h-[300px]"
+            className="relative w-full h-[300px] shadow-lg border rounded-md"
           >
             {/* Overlay Content */}
             <div
               className="flex flex-row justify-between items-center
-                absolute bottom-4 left-3 w-[90%]"
+                absolute bottom-0 right-0 left-0 w-full bg-white px-4"
             >
               <span
-                className="text-[20px] text-white font-medium
-                  md:text-xl lg:text-lg bg-black/20 backdrop-blur-sm px-2 py-1 rounded-md"   
+                className="text-[20px] text-gray-600 font-medium
+                  md:text-xl lg:text-lg px-2 py-4 rounded-md"   
               > 
                 {product.category}
               </span>
 
               <span>
-                <BsArrowRightShort className="text-[36px] text-indigo-600" />
+                <BsArrowRightShort className="text-[42px] text-indigo-600" />
               </span>
             </div>
           </ProductCard>
@@ -74,7 +74,7 @@ const CategoryCards = () => {
      data-aos-anchor-placement="center-bottom">
       <Image 
           src="/images/ProductImages/abcbook.jpg"
-          alt="fjfj"
+          alt="abc-book"
           width={550}
           height={450}
           className="rounded-lg "
@@ -94,7 +94,7 @@ const CategoryCards = () => {
                 <li className="mb-2">Coloring Book</li>
                 <li>Copying & Activity Book</li>
               </ul>
-              <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">Shop Now</button>
+              <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300"> <Link href="/shop">Shop Now</Link></button>
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {Poppins} from 'next/font/google'
+import Link from "next/link";
 // import heroimage1 from '../../public/images/heroimages/hero-02.png'
 // import heroimage2 from '../../public/images/heroimages/hero-01.png'
 
@@ -32,7 +33,7 @@ const HeroSection = () => {
             <span className="text-blue-900 font-bold">A</span>
             <span className="text-green-600 font-bold">M</span>
           </h1>
-          <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">Shop Now</button>
+          <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300"> <Link href="/shop">Shop Now</Link> </button>
         </div>
         {/* <div className="flex flex-row md:flex-col"> */}
           {/* Floating Images */}
