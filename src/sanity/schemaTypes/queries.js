@@ -60,6 +60,7 @@ export async function getCategories() {
 export const getRelatedProductsByCategoryTitle = async (categoryTitle, productId) => {
   const query = `*[_type == "product" && category->title == $categoryTitle && code != $productId][0..2]{
     _id,
+    code,
     title,
     description,
     price,

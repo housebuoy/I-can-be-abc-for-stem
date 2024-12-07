@@ -109,7 +109,7 @@ const SignUpPage = () => {
             </Link>
           </div>
           <h2 className="text-2xl font-bold text-center mb-4">Create New Account</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} autoComplete='on' className="space-y-4">
             {/* Full Name */}
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
@@ -118,6 +118,8 @@ const SignUpPage = () => {
               <input
                 type="text"
                 id="fullName"
+                autoCapitalize="words"
+                autoComplete="name"
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Enter Your Full Name"
                 className="mt-1 w-full border outline-none border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500"
@@ -132,6 +134,7 @@ const SignUpPage = () => {
               <input
                 type="email"
                 id="email"
+                autoComplete='email'
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter Your Email"
                 className="mt-1 w-full border outline-none border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500"
@@ -147,6 +150,7 @@ const SignUpPage = () => {
                 <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    autoComplete='new-password'
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter Your Password"
                     className="w-full outline-none"

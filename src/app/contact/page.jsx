@@ -2,10 +2,10 @@ import React from "react";
 
 const ContactUs = () => {
   return (
-    <div className="container mx-auto sm:px-14 px-5 py-8 pt-28">
+    <div className="container mx-auto sm:px-14 px-5 py-8 pt-28" data-aos="fade-in">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Contact Information */}
-        <div className="flex flex-col sm:justify-center">
+        <div className="flex flex-col sm:justify-center" data-aos="fade-in">
             <div className="">
                 <h1 className="text-center text-4xl font-bold mb-4">Get In Touch With Us</h1>
                 <p className="text-center text-gray-600 mb-8">

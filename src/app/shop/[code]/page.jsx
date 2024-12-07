@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { getProductByCode, getRelatedProductsByCategoryTitle } from "@/sanity/schemaTypes/queries";
 import Image from "next/image";
 import { useCart } from "@/app/Context/CartProvider";
+import Link from "next/link";
 
 const ProductPage = ({ params: paramsPromise }) => {
   const { addToCart } = useCart();
@@ -189,7 +190,9 @@ const ProductPage = ({ params: paramsPromise }) => {
             Add to Cart
           </button>
           <button className="w-full md:w-auto md:px-36 bg-indigo-600 text-white py-2 rounded mt-2 md:mt-4">
+            <Link href="/Checkout">
             Checkout
+            </Link>
           </button>
         </div>
       </div>
@@ -216,8 +219,10 @@ const ProductPage = ({ params: paramsPromise }) => {
                 <div className="flex flex-wrap items-center justify-between">
                   <p className="text-xl font-bold text-indigo-600 mt-2">GH¢ {relatedProduct.price}</p>
                   <button className="bg-indigo-600 text-white px-4 py-2 mt-4 rounded">
-                    View Product
-                  </button>
+                    <Link href={`/shop/${relatedProduct.code}`}>
+                      View Product
+                    </Link>
+                  </button>                  
                 </div>
                 
               </div>
