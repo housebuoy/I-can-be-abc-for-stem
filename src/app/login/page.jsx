@@ -94,7 +94,7 @@ const LoginPage = () => {
                                     type={showPassword ? "text" : "password"}
                                     id="password"
                                     value={password}
-                                    autoComplete="new-password"
+                                    autoComplete="current-password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter Your Password"
                                     className="w-full outline-none"
