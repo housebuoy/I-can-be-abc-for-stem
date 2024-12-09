@@ -20,7 +20,7 @@ const currentYear = new Date().getFullYear();
 
 const Footer = () => {
   return (
-    <footer className="bg-[url(../../public/images/product.svg)] bg-cover bg-center min-h-96 bg-white border-t border-[#d6e1ff] px-14 text-gray-700 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+    <footer className="bg-[url(../../public/images/product.svg)] bg-cover bg-center min-h-96 bg-white border-t border-[#d6e1ff] px-10 sm:px-14 text-gray-700 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
         <Link href="/" className="flex flex-col items-center md:items-start">
             <Image 
                 src="/images/logo/logo.png"
@@ -43,8 +43,11 @@ const Footer = () => {
                 <Link href="/contact" className="block md:inline hover:underline">
                     Contact
                 </Link>
+                <Link href="/ProfilePage" className="block md:inline hover:underline">
+                    Profile
+                </Link>
             </div>
-            <div className="mt-16 flex flex-col items-center md:items-start">
+            <div className="sm:mt-16 mt-6 flex flex-col items-center md:items-start">
                 <Link href="https://www.kidsathomesp.com" className="gap-2 items-end">
                         <div className='items-start'>
                             <p className="font-semibold">Powered by</p>
@@ -74,7 +77,7 @@ const Footer = () => {
                 <li>+233 54 489 9713</li>
                 <li>www.kidsathomesp.com</li>
             </ul>
-            <div className="flex justify-center items-center gap-4 mt-16 flex-wrap">
+            <div className="flex justify-center items-center sm:gap-4 gap-2 mt-16 flex-wrap">
                 {socialIcons.map((item) => (
                     <Link
                         key={item.id}

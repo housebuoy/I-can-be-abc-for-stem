@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "../app/Context/CartProvider";
 import { getProductByCode } from "../sanity/schemaTypes/queries";
 import Image from "next/image";
+import Link from "next/link";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 import { useRouter } from "next/navigation";
@@ -26,7 +27,7 @@ const ShoppingCart = ({ isOpen, onClose }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, );
 
   useEffect(() => {
     if (!user) return;
@@ -89,9 +90,11 @@ const ShoppingCart = ({ isOpen, onClose }) => {
               <h3 className="text-lg font-semibold">
                 Subtotal: GH¢ {cartTotal.toFixed(2)}
               </h3>
-              <button className="px-36 bg-indigo-600 text-white py-2 rounded mt-4">
-                Checkout
-              </button>
+              <Link href ="/Checkout">
+                <button className="px-36 bg-indigo-600 text-white py-2 rounded mt-4" onClick={onClose}>                
+                    Checkout                                
+                </button>
+              </Link>
             </div>
           </div>
         )}

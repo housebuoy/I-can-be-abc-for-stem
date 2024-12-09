@@ -89,3 +89,17 @@ export const getProductByCode = async (code) => {
   }`;
   return await client.fetch(query, { code });
 };
+
+
+export const getCouponByCode = async (code) => {
+  const query = `*[_type == "coupon" && code == $code][0]{
+    ...,
+    category->{
+      title,
+      _id
+    },
+    product-> { _id, code }
+  }`;
+  const params = { code };
+  return await client.fetch(query, params);
+};

@@ -189,11 +189,11 @@ const ProductPage = ({ params: paramsPromise }) => {
           >
             Add to Cart
           </button>
-          <button className="w-full md:w-auto md:px-36 bg-indigo-600 text-white py-2 rounded mt-2 md:mt-4">
-            <Link href="/Checkout">
-            Checkout
-            </Link>
-          </button>
+          <Link href="/Checkout">
+            <button className="w-full md:w-auto md:px-36 bg-indigo-600 text-white py-2 rounded mt-2 md:mt-4">
+              Checkout            
+            </button>
+          </Link>
         </div>
       </div>
 

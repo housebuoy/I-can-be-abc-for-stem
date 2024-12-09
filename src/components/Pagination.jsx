@@ -32,7 +32,7 @@ const Pagination = ({ filteredProducts, itemsPerPage, onPageChange }) => {
           onClick={() => goToPage(index + 1)}
           className={`px-3 py-2 rounded ${
             currentPage === index + 1
-              ? "bg-yellow-500 text-white"
+              ? "bg-indigo-400 text-white"
               : "bg-gray-100 text-gray-800"
           }`}
         >
