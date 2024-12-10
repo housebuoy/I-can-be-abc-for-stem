@@ -79,7 +79,7 @@ const ProfilePage = () => {
         console.log("Email updated successfully.");
       }
   
-      alert("Cheeck your inbox to verify your email address");
+      alert("Check your inbox to verify your email address");
       setIsEditing(false);
     } catch (error) {
       console.error("Error in handleSave:", error.message);

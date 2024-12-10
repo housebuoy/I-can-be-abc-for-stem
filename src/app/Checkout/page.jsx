@@ -12,6 +12,7 @@ const Checkout = () => {
   const [shippingDetails, setShippingDetails] = useState({
     fullName: "",
     address: "",
+    landmark: "",
     city: "",
     postalCode: "",
     phone: "",
@@ -20,7 +21,7 @@ const Checkout = () => {
   const [discountedProduct, setdiscountedProduct] = useState("");
   const [discount, setDiscount] = useState(0); // Discount percentage
   const [discountPercent, setDiscountPercent] = useState(0); // Discount percentage
-  const [paymentMethod, setPaymentMethod] = useState("card");
+//   const [paymentMethod, setPaymentMethod] = useState("card");
 
   const subtotal = products.reduce((total, item) => total + item.quantity * item.price, 0);
   const discountAmount = (subtotal * discount) / 100;
@@ -193,12 +194,13 @@ const Checkout = () => {
         {/* Shipping Details */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-700 mb-4">Shipping Details</h2>
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-4" autoComplete="on">
             <div className="col-span-2 sm:col-span-1">
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700">Full Name <span className="text-red-600">*</span></label>
               <input
                 type="text"
                 name="fullName"
+                autoComplete="name"
                 value={shippingDetails.fullName}
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
@@ -206,10 +208,11 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label className="block text-sm font-medium text-gray-700">Phone</label>
+              <label className="block text-sm font-medium text-gray-700">Phone <span className="text-red-600">*</span></label>
               <input
                 type="tel"
                 name="phone"
+                autoComplete="tel"
                 value={shippingDetails.phone}
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
@@ -217,11 +220,24 @@ const Checkout = () => {
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700">Address</label>
+              <label className="block text-sm font-medium text-gray-700">Address <span className="text-red-600">*</span></label>
               <input
                 type="text"
                 name="address"
+                autoComplete="street-address"
                 value={shippingDetails.address}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
+                required
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Landmark <span className="text-red-600">*</span></label>
+              <input
+                type="text"
+                name="landmark"
+                value={shippingDetails.landmark}
+                autoComplete="address-line2"
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
                 required
@@ -232,13 +248,14 @@ const Checkout = () => {
               <input
                 type="text"
                 name="postalCode"
+                autoComplete="postal-code"
                 value={shippingDetails.postalCode}
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">City</label>
+              <label className="block text-sm font-medium text-gray-700">City <span className="text-red-600">*</span></label>
               <input
                 type="text"
                 name="city"

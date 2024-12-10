@@ -182,7 +182,12 @@ const SignUpPage = () => {
             <button
               type="submit"
               className="w-full py-2 px-4 bg-indigo-600 text-white font-bold rounded-md shadow hover:bg-indigo-700"
-            disabled={!isChecked} >
+              onClick={(e) => {
+                if (!isChecked) {
+                    e.preventDefault(); // Prevent form submission
+                    alert("Please agree to the terms and conditions to proceed by checking the box.");
+                }
+              }} >
               {loading ? "Signing Up..." : "Sign Up"}
 
             </button>
