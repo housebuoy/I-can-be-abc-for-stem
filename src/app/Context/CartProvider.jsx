@@ -15,6 +15,7 @@ export const CartProvider = ({ children }) => {
     try {
       const response = await fetch(`/api/cart?userId=${userId}`);
       if (!response.ok) throw new Error("Failed to fetch cart");
+      console.log(userId)
   
       const data = await response.json();
       setCartItems((prevCartItems) => {
@@ -34,7 +35,7 @@ export const CartProvider = ({ children }) => {
         return mergedCart;
       });
     } catch (error) {
-      console.error("Error fetching cart:", error);
+      console.log("Error fetching cart:", error);
     }
   };
   
