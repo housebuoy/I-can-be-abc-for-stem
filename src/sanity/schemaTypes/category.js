@@ -7,12 +7,19 @@ const categorySchema = {
         name: "title",
         title: "Title",
         type: "string",
+        validation: (Rule) => Rule.required(),
       },
       {
         name: "description",
         title: "Description",
         type: "text",
       },
+      {
+        name: "image",
+        title: "Category Image",
+        type: "image",
+        validation: (Rule) => Rule.required(),
+    },
     ],
   };
   

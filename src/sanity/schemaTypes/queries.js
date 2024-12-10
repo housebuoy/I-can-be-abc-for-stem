@@ -48,7 +48,8 @@ export async function getCategories() {
     *[_type == "category"] {
       _id,
       title,
-      description
+      description,
+      "imageUrl": image.asset->url
     }
   `;
   

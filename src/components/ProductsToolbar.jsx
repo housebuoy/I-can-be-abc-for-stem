@@ -8,7 +8,7 @@ import { getProducts } from "../sanity/schemaTypes/queries";
 import { client } from "../sanity/lib/client";
 
 
-const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount, resultsPerPage, setResultsPerPage  }) => {
+const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount, resultsPerPage, setResultsPerPage, currentPage  }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropBarOpen, setIsDropBarOpen] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
@@ -81,6 +81,13 @@ const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount
     };
   }, [isDropdownOpen]);
 
+  const getDisplayedRange = () => {
+    const start = (currentPage - 1) * resultsPerPage + 1;
+    const end = Math.min(currentPage * resultsPerPage, filteredProductsCount);
+    return `${start}-${end}`;
+  };
+
+  
   return (
     <section className="pt-2">
       <div className="fixed z-10 w-full">
@@ -93,7 +100,7 @@ const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount
             <span className="hidden sm:inline">Filter</span>
           </button>
           <div className="text-gray-700">
-            Showing <b>1-{resultsPerPage}</b> of <b>{filteredProductsCount}</b> results
+            Showing <b>{getDisplayedRange()}</b> of <b>{filteredProductsCount}</b> results
           </div>
         </div>
         {isToolbarOpen && (
@@ -215,7 +222,7 @@ const ProductToolbar = ({ products, setProducts, onFilter, filteredProductsCount
 
         {/* Pagination Info */}
         <div className="text-gray-700">
-          Showing <b>1-{resultsPerPage}</b> of <b>{filteredProductsCount}</b> results
+          Showing <b>{getDisplayedRange()}</b> of <b>{filteredProductsCount}</b> results
         </div>
 
 

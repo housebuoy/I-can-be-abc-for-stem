@@ -219,6 +219,28 @@ const Checkout = () => {
                 required
               />
             </div>
+            <div className="col-span-2 sm:col-span-1">
+              <label className="block text-sm font-medium text-gray-700">Postal Code</label>
+              <input
+                type="text"
+                name="postalCode"
+                autoComplete="postal-code"
+                value={shippingDetails.postalCode}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
+              />
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <label className="block text-sm font-medium text-gray-700">City/Country <span className="text-red-600">*</span></label>
+              <input
+                type="text"
+                name="city"
+                value={shippingDetails.city}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
+                required
+              />
+            </div>
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700">Address <span className="text-red-600">*</span></label>
               <input
@@ -243,28 +265,7 @@ const Checkout = () => {
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Post Code</label>
-              <input
-                type="text"
-                name="postalCode"
-                autoComplete="postal-code"
-                value={shippingDetails.postalCode}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">City <span className="text-red-600">*</span></label>
-              <input
-                type="text"
-                name="city"
-                value={shippingDetails.city}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 outline-none"
-                required
-              />
-            </div>
+            
           </form>
         </div>
 

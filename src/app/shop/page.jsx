@@ -9,16 +9,19 @@ import Image from "next/image";
 import { useCart } from "@/app/Context/CartProvider";
 import Link from "next/link";
 import { useSearch } from "@/app/Context/SearchContext"; // Import SearchContext
+import { useSearchParams } from "next/navigation";
 
 const Shop = () => {
   const { searchQuery } = useSearch(); // Access the global search query
   const [products, setProducts] = useState([]); // All products
+  const searchParams = useSearchParams();
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products
   const [displayProducts, setDisplayProducts] = useState([]);
   const [resultsPerPage, setResultsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { addToCart } = useCart();
+  const category = searchParams.get("category");
 
   const handleCopyLink = async () => {
     try {
@@ -52,6 +55,17 @@ const Shop = () => {
     setCurrentPage(1); // Reset to the first page after a new search
   }, [searchQuery, products]);
 
+  useEffect(() => {
+    if (category) {
+      const filteredByCategory = products.filter(
+        (product) => product.category?.title.toLowerCase() === category.toLowerCase()
+      );
+      setFilteredProducts(filteredByCategory); // Set filtered products to the filtered category products
+    } else {
+      setFilteredProducts(products); // No category selected, show all products
+    }
+  }, [category, products]);
+
   // Update the displayed products based on pagination
   useEffect(() => {
     const startIndex = (currentPage - 1) * resultsPerPage;
@@ -74,6 +88,7 @@ const Shop = () => {
         setProducts={setProducts}
         setResultsPerPage={setResultsPerPage}
         resultsPerPage={resultsPerPage}
+        currentPage={currentPage}
       />
       <div className="pt-24 px-10">
         {filteredProducts.length === 0 ? (
