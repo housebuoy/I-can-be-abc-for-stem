@@ -1,6 +1,6 @@
 'use client';
 import ProductToolbar from "@/components/ProductsToolbar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Pagination from "@/components/Pagination";
 import { getProducts } from "@/sanity/schemaTypes/queries";
 import { FaShareAlt, FaEye } from "react-icons/fa";
@@ -10,6 +10,7 @@ import { useCart } from "@/app/Context/CartProvider";
 import Link from "next/link";
 import { useSearch } from "@/app/Context/SearchContext"; // Import SearchContext
 import { useSearchParams } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton"
 
 const Shop = () => {
   const { searchQuery } = useSearch(); // Access the global search query
@@ -79,111 +80,149 @@ const Shop = () => {
   };
 
   return (
-    <section className="pt-20 pb-10 min-h-screen">
-      {/* Pass the filter function to ProductToolbar */}
-      <ProductToolbar 
-        onFilter={(category) => setFilteredProducts(products.filter(product => product.category?.title === category))}
-        filteredProductsCount={filteredProducts.length}
-        products={products}
-        setProducts={setProducts}
-        setResultsPerPage={setResultsPerPage}
-        resultsPerPage={resultsPerPage}
-        currentPage={currentPage}
-      />
-      <div className="pt-24 px-10">
-        {filteredProducts.length === 0 ? (
-          <p className="text-center text-xl text-gray-600 pt-24">
-            No products found for <span className="text-indigo-600">
-              &quot;{searchQuery}&quot;.
-            </span>
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayProducts.map((product) => (
-              <div
-                key={product.code}
-                className="relative group bg-white border rounded-lg shadow-lg overflow-hidden transition hover:shadow-lg"
-                data-aos="zoom-in"
-                data-aos-duration="500"
-              >
-                <div className="relative">
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.title}
-                    layout="responsive"
-                    objectFit="cover"
-                    width={400} // specify the width
-                    height={224} // specify the height
-                    className="w-full h-56 object-cover"
-                  />
-                  {product.discount && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      -{product.discount}%
-                    </div>
-                  )}
-                  {product.isNew && (
-                    <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      New
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gray-800 bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-opacity h-[100%] w-[100%] top-[0%] left-[0%]">
-                    <div className="opacity-0 group-hover:opacity-100 transition">
-                      <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1" onClick={handleCopyLink}>
-                        <FaShareAlt />
-                      </button>
-                      <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
-                        <Link href={`/shop/${product.code}`}>
-                          <FaEye />
-                        </Link>
-                      </button>
-                      <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
-                        <AiOutlineLike />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 border-t">
-                  <h2 className="text-lg font-semibold">{product.title}</h2>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {product.discountedPrice ? (
-                        <>
-                          <p className="text-lg font-bold text-red-600">
-                            {product.discountedPrice}
-                          </p>
-                          <p className="text-sm line-through text-gray-500">
-                            {product.price}
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-lg font-bold text-gray-800">
-                          GH¢ {product.price}
-                        </p>
-                      )}
-                    </div>
-                    <button
-                      className="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-blue-600"
-                      onClick={() => addToCart(product.code)}
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+    <Suspense fallback={
+      <div className="flex items-center space-x-6 mt-40 md:mt-10 w-[90%] mx-auto 2xl:w-[81%] 2xl:mt-10 pb-10">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-y-7 md:gap-y-7 md:gap-x-7 xl:grid-cols-4">
+          <div className="w-full">
+            <Skeleton className="h-32 w-64 rounded-sm mb-2 bg-gray-200" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+            </div>
           </div>
-        )}
+          <div className="w-full">
+            <Skeleton className="h-32 w-64 rounded-sm mb-2 bg-gray-200" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+            </div>
+          </div>
+          <div className="w-full">
+            <Skeleton className="h-32 w-64 rounded-sm mb-2 bg-gray-200" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+            </div>
+          </div>
+          <div className="w-full">
+            <Skeleton className="h-32 w-64 rounded-sm mb-2 bg-gray-200" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+              <Skeleton className="h-6 w-64 bg-gray-200 rounded" />
+            </div>
+          </div>
+          
+          
+        </div>
+        
       </div>
+    }>
+      <section className="pt-20 pb-10 min-h-screen">
+        {/* Pass the filter function to ProductToolbar */}
+        <ProductToolbar 
+          onFilter={(category) => setFilteredProducts(products.filter(product => product.category?.title === category))}
+          filteredProductsCount={filteredProducts.length}
+          products={products}
+          setProducts={setProducts}
+          setResultsPerPage={setResultsPerPage}
+          resultsPerPage={resultsPerPage}
+          currentPage={currentPage}
+        />
+        <div className="pt-24 px-10">
+          {filteredProducts.length === 0 ? (
+            <p className="text-center text-xl text-gray-600 pt-24">
+              No products found for <span className="text-indigo-600">
+                &quot;{searchQuery}&quot;.
+              </span>
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayProducts.map((product) => (
+                <div
+                  key={product.code}
+                  className="relative group bg-white border rounded-lg shadow-lg overflow-hidden transition hover:shadow-lg"
+                  data-aos="zoom-in"
+                  data-aos-duration="500"
+                >
+                  <div className="relative">
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.title}
+                      layout="responsive"
+                      objectFit="cover"
+                      width={400} // specify the width
+                      height={224} // specify the height
+                      className="w-full h-56 object-cover"
+                    />
+                    {product.discount && (
+                      <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        -{product.discount}%
+                      </div>
+                    )}
+                    {product.isNew && (
+                      <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        New
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gray-800 bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-opacity h-[100%] w-[100%] top-[0%] left-[0%]">
+                      <div className="opacity-0 group-hover:opacity-100 transition">
+                        <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1" onClick={handleCopyLink}>
+                          <FaShareAlt />
+                        </button>
+                        <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
+                          <Link href={`/shop/${product.code}`}>
+                            <FaEye />
+                          </Link>
+                        </button>
+                        <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
+                          <AiOutlineLike />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 border-t">
+                    <h2 className="text-lg font-semibold">{product.title}</h2>
+                    <p className="text-sm text-gray-600 mb-2">
+                      {product.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {product.discountedPrice ? (
+                          <>
+                            <p className="text-lg font-bold text-red-600">
+                              {product.discountedPrice}
+                            </p>
+                            <p className="text-sm line-through text-gray-500">
+                              {product.price}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-lg font-bold text-gray-800">
+                            GH¢ {product.price}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        className="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-blue-600"
+                        onClick={() => addToCart(product.code)}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <Pagination
-        filteredProducts={filteredProducts}
-        itemsPerPage={resultsPerPage}
-        onPageChange={handlePageChange}
-      />
-    </section>
+        <Pagination
+          filteredProducts={filteredProducts}
+          itemsPerPage={resultsPerPage}
+          onPageChange={handlePageChange}
+        />
+      </section>
+    </Suspense>
   );
 };
 
