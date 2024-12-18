@@ -63,6 +63,14 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		}
   	}
+  },keyframes: {
+	"gradient-border": {
+	  "0%, 100%": { backgroundPosition: "0% 50%" },
+	  "50%": { backgroundPosition: "100% 50%" },
+	},
+  },
+  animation: {
+	"gradient-border": "gradient-border 2s infinite",
   },
   plugins: [require("tailwindcss-animate")],
 };

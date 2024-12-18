@@ -10,7 +10,8 @@ import { useCart } from "@/app/Context/CartProvider";
 import Link from "next/link";
 import { useSearch } from "@/app/Context/SearchContext"; // Import SearchContext
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have a Skeleton component
+import { Skeleton } from "@/components/ui/skeleton"; 
+import { ToastContainer, toast } from 'react-toastify';
 
 const ShopComponent = () => {
   const { searchQuery } = useSearch(); // Access the global search query
@@ -21,9 +22,19 @@ const ShopComponent = () => {
   const [displayProducts, setDisplayProducts] = useState([]);
   const [resultsPerPage, setResultsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+  const notify = () => toast.info("Item added to your cart! Click the cart icon in the header to view.");
+  const [isCartUpdated, setIsCartUpdated] = useState(false);
 
   const { addToCart } = useCart();
   const category = searchParams.get("category");
+
+  const cartFunctionality = (product) => {
+    addToCart(product.code)
+    notify()
+    setIsCartUpdated(true);
+    // Reset animation state after 1 second (match animation duration in CSS)
+    setTimeout(() => setIsCartUpdated(false), 1000);
+  }
 
   const handleCopyLink = async () => {
     try {
@@ -84,6 +95,7 @@ const ShopComponent = () => {
   return (
     <section className="pt-20 pb-10 min-h-screen">
       {/* Pass the filter function to ProductToolbar */}
+      
       <ProductToolbar
         onFilter={(category) => setFilteredProducts(products.filter((product) => product.category?.title === category))}
         filteredProductsCount={filteredProducts.length}
@@ -93,6 +105,7 @@ const ShopComponent = () => {
         resultsPerPage={resultsPerPage}
         currentPage={currentPage}
       />
+      <ToastContainer className="top-24"/>
       <div className="pt-24 px-10">
         {/* Show Skeleton Loader if the data is still loading */}
         {loading ? (
@@ -168,7 +181,7 @@ const ShopComponent = () => {
                     </div>
                     <button
                       className="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-blue-600"
-                      onClick={() => addToCart(product.code)}
+                      onClick={() => cartFunctionality(product)}
                     >
                       Add to Cart
                     </button>

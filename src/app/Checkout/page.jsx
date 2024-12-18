@@ -3,20 +3,25 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "@/app/Context/CartProvider";
 import { getProductByCode, getCouponByCode } from "../../sanity/schemaTypes/queries";
 import { auth } from "../../../firebase";
+// import { PaystackButton } from 'react-paystack';
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
 
 const Checkout = () => {
   const { cartItems, removeFromCart } = useCart();
   const [products, setProducts] = useState([]);
+  
+  const user = auth.currentUser;
   const [shippingDetails, setShippingDetails] = useState({
-    fullName: "",
+    fullName: user?.displayName || "",
     address: "",
     landmark: "",
     city: "",
     postalCode: "",
     phone: "",
   });
+
+  const [loading, setLoading] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [discountedProduct, setdiscountedProduct] = useState("");
   const [discount, setDiscount] = useState(0); // Discount percentage
@@ -25,13 +30,114 @@ const Checkout = () => {
 
   const subtotal = products.reduce((total, item) => total + item.quantity * item.price, 0);
   const discountAmount = (subtotal * discount) / 100;
-  const shippingFee = 20;
+  const shippingFee = 0;
   const total = subtotal - discountAmount + shippingFee;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
   };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+        document.body.removeChild(script);
+    };
+}, []);
+
+
+
+const handlePaystackPayment = () => {
+  const handler = window.PaystackPop.setup({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY, // Your public key
+      email: user?.email || "guest@example.com", // Customer's email
+      amount: Math.round(total * 100), // Amount in kobo
+      currency: "GHS", // Currency (default is NGN)
+      ref: new Date().getTime().toString(), // Reference number
+      callback: (response) => {
+          // Handle successful payment
+          console.log("Payment successful:", response);
+          saveOrder(response.reference); // Save order details to backend
+      },
+      onClose: () => {
+          console.log("Payment popup closed");
+          alert("Payment was not completed.");
+      },
+  });
+
+  handler.openIframe(); // Open Paystack payment popup
+};
+
+
+
+  // const initializePayment = usePaystackPayment(config);
+
+  // const handlePayment = () => {
+  //   if (!user?.email) {
+  //     alert("User email is required for payment.");
+  //     return;
+  //   }
+  //   if (!shippingDetails.fullName || !shippingDetails.address || !shippingDetails.phone) {
+  //     alert("Please fill in all required shipping details.");
+  //     return;
+  //   }
+  
+  //   setLoading(true); // Start the loading state
+  
+  //   initializePayment(
+  //     (response) => {
+  //       console.log("Payment Successful", response);
+  //       setLoading(false); // End loading state
+  //       // saveOrder(response.reference); // Save order details after successful payment
+  //     },
+  //     (error) => {
+  //       console.error("Payment Failed", error);
+  //       setLoading(false); // End loading state
+  //       alert("Payment failed. Please try again.");
+  //     }
+  //   );
+  // };
+  
+  
+  // Save order details to the backend
+  const saveOrder = async (paymentReference) => {
+    try {
+        const orderDetails = {
+            userId: user?.uid || "guest",
+            shippingDetails,
+            cartItems: products,
+            total,
+            paymentReference,
+        };
+
+        console.log("Sending order details:", orderDetails);
+
+        const response = await fetch("/api/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderDetails),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to save order.");
+        }
+
+        const responseData = await response.json();
+        console.log("Order saved successfully:", responseData);
+
+        alert("Order placed successfully!");
+    } catch (error) {
+        console.error("Error saving order:", error.message);
+        alert("Failed to save order. Please contact support.");
+    }
+};
+
+    
+  
 
   const handleApplyCoupon = async () => {
     if (!couponCode) {
@@ -108,7 +214,6 @@ const Checkout = () => {
     console.log("Order details:", { products, shippingDetails, paymentMethod });
   };
 
-  const user = auth.currentUser;
 
   useEffect(() => {
     if (!user) return;
@@ -241,7 +346,7 @@ const Checkout = () => {
                 required
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-medium text-gray-700">Address <span className="text-red-600">*</span></label>
               <input
                 type="text"
@@ -253,7 +358,7 @@ const Checkout = () => {
                 required
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-medium text-gray-700">Landmark <span className="text-red-600">*</span></label>
               <input
                 type="text"
@@ -284,7 +389,7 @@ const Checkout = () => {
             )}
             <div className="flex justify-between">
                 <p className="text-gray-600">Shipping Fee</p>
-                <p className="text-gray-800">GH¢ {shippingFee.toFixed(2)}</p>
+                <p className="text-gray-800">Payment on delivery</p>
             </div>
             <div className="flex justify-between font-bold text-lg">
                 <p>Total</p>
@@ -295,11 +400,15 @@ const Checkout = () => {
 
         {/* Place Order Button */}
         <button
-          onClick={handlePlaceOrder}
-          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700"
-        >
-          Place Order
+            onClick={handlePaystackPayment}
+            disabled={loading}
+            className={`w-full py-3 text-white font-semibold rounded-md ${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+            >
+            {loading ? "Processing..." : "Pay with Paystack"}
         </button>
+        {/* <PaystackButton {...componentProps} /> */}
       </div>
     </div>
   );

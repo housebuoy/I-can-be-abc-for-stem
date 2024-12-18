@@ -8,7 +8,8 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [fullName, setFullName] = useState("");
-  const [userId, setUserId] = useState(null); // Firebase userId
+  const [userId, setUserId] = useState(null);
+  const [isCartUpdated, setIsCartUpdated] = useState(false);
 
   // Fetch the cart from MongoDB
   const fetchCart = async (userId) => {
@@ -61,6 +62,8 @@ export const CartProvider = ({ children }) => {
           item.code === productCode ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
+      setIsCartUpdated(true);
+      setTimeout(() => setIsCartUpdated(false), 5000);
       return [...prevCartItems, { code: productCode, quantity: 1 }];
     });
   };
@@ -105,6 +108,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartItems,
+        isCartUpdated,
         addToCart,
         removeFromCart,
         setFullName,

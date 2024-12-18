@@ -19,7 +19,7 @@ const poppins = Poppins({
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, isCartUpdated } = useCart();
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const { setSearchQuery } = useSearch();
@@ -53,6 +53,8 @@ const Header = () => {
     setSideMenuOpen(!sideMenuOpen)
   }
 
+  isCartUpdated && console.log("hey why should we wait")
+
   return (
     <header className={`${poppins.className} flex items-center justify-between bg-[white] text-black py-2 px-5 sm:px-10 fixed top-0 left-0 w-full z-50 shadow-md font-poppins`}>
       {/* Logo */}
@@ -64,10 +66,28 @@ const Header = () => {
 
       {/* Hamburger Menu for Smaller Screens */}
       <div className="md:hidden flex items-center">
-        <button onClick={toggleMenu} className="text-black">
-          {menuOpen ? <HiX size={35} /> : <HiMenuAlt3 size={35} />}
+        <button
+          onClick={toggleMenu}
+          className={`relative p-1 rounded-sm border-2 border-transparent transition-all duration-300
+            ${isCartUpdated ? "animate-border-gradient" : "border-gray-300"}
+          `}
+        >
+          <span
+            className={`
+              absolute inset-0 rounded-sm p-[1px] 
+              bg-gradient-to-r from-purple-500 to-indigo-500 
+              ${isCartUpdated ? "opacity-100" : "opacity-0"} transition-opacity duration-300
+            `}
+          ></span>
+          <span className="relative flex items-center justify-center bg-white rounded-sm z-10">
+            {menuOpen ? <HiX size={35} /> : <HiMenuAlt3 size={35} />}
+          </span>
         </button>
       </div>
+
+
+
+
 
       {/* Navigation Links and Search Bar */}
       <nav

@@ -41,7 +41,7 @@ const ProfilePage = () => {
     const user = auth.currentUser;
     if (user) {
       setUserDetails({
-        name: user.displayName || "User",
+        name: user?.displayName || "User",
         email: user.email || "",
       });
     }
