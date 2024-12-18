@@ -1,72 +1,65 @@
-import React, { useRef } from "react";
-import emailjs from "@emailjs/browser";
+"use client";
+import { TiChevronRightOutline } from "react-icons/ti";
+import axios from "axios"; // Import Axios
 
-const ContactUs = () => {
-  const form = useRef();
-
-  const sendEmail = (e) => {
+const SubscriptionForm = () => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value; // Get the email from the form
 
-    emailjs
-      .sendForm(
-        "service_u4993fe",    // Replace with your Service ID
-        "template_fykp8o9",   // Replace with your Template ID
-        form.current,
-        "RfxS1J7oiiuebzXib"     // Replace with your Public Key
-      )
-      .then(
-        (result) => {
-          alert("Message sent successfully!");
-          console.log(result.text);
-          form.current.reset(); // Reset form
+    try {
+      const BREVO_API_KEY = process.env.NEXT_PUBLIC_BREVO_API_KEY;
+      const BREVO_URL = "https://api.brevo.com/v3/contacts";
+
+      // Make the POST request to Brevo
+      await axios.post(
+        BREVO_URL,
+        {
+          email: email, // Email address to subscribe
+          listIds: [2], // Replace 123 with your Brevo contact list ID
+          updateEnabled: true,
         },
-        (error) => {
-          alert("Failed to send message. Try again later.");
-          console.error(error.text);
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "api-key": BREVO_API_KEY,
+          },
         }
       );
+
+      alert("Subscription successful! Thank you for signing up.");
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      alert("There was an issue with your subscription. Please try again.");
+    }
   };
 
   return (
-    <div className="container mx-auto sm:px-14 px-5 py-8 pt-28">
-      <h1 className="text-center text-4xl font-bold mb-4">Get In Touch With Us</h1>
-      <form ref={form} onSubmit={sendEmail} className="space-y-4 shadow-xl rounded-md py-14 border border-gray-200 px-5">
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          className="w-full border outline-none border-gray-300 rounded-md p-2"
-          required
-        />
+    <div className="mt-16">
+      <div className="">
+        <h2 className="font-bold text-xl">Stay ahead with STEAM</h2>
+        <p className="text-sm">Subscribe to get Discounts and Updates</p>
+      </div>
+      <form
+        className="mt-4 flex items-center justify-between text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 w-full md:w-5/6"
+        onSubmit={handleSubmit} // Add submit handler
+      >
         <input
           type="email"
-          name="email"
-          placeholder="Your Email"
-          className="w-full border outline-none border-gray-300 rounded-md p-2"
+          name="email" // Add a name attribute for easier access
+          placeholder="Enter your email"
+          className="w-full px-4 py-2 outline-none"
           required
         />
-        <input
-          type="text"
-          name="subject"
-          placeholder="Subject"
-          className="w-full border outline-none border-gray-300 rounded-md p-2"
-        />
-        <textarea
-          name="message"
-          rows="4"
-          placeholder="Your Message"
-          className="w-full border outline-none border-gray-300 rounded-md p-2"
-          required
-        ></textarea>
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-800"
+          className="px-2 py-2 text-white text-2xl bg-indigo-600 rounded-r hover:bg-indigo-700 transition-all duration-300"
         >
-          Submit
+          <TiChevronRightOutline />
         </button>
       </form>
     </div>
   );
 };
 
-export default ContactUs;
+export default SubscriptionForm;

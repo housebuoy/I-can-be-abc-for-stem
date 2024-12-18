@@ -21,16 +21,18 @@ const currentYear = new Date().getFullYear();
 const Footer = () => {
   return (
     <footer className="bg-[url(../../public/images/product.svg)] bg-cover bg-center min-h-96 bg-white border-t border-[#d6e1ff] px-10 sm:px-14 text-gray-700 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
-        <Link href="/" className="flex flex-col items-center md:items-start">
-            <Image 
-                src="/images/logo/logo.png"
-                width={140} 
-                height={140} 
-                alt="logo"
-                priority
-            />
+        <div className="flex flex-col items-center md:items-start">
+            <Link href="/" className="flex flex-col items-center md:items-start">
+                <Image 
+                    src="/images/logo/logo.png"
+                    width={140} 
+                    height={140} 
+                    alt="logo"
+                    priority
+                />                
+            </Link>
             <SubscriptionForm />
-        </Link>
+        </div>
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h2 className="font-semibold text-2xl">Website Map</h2>
             <div className="flex md:flex-col gap-x-5 flex-row gap-y-3 mt-2">
