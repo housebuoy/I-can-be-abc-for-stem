@@ -10,15 +10,17 @@ export default function LayoutWrapper({ children }) {
   const isStudioPath = pathname.startsWith("/studio");
   const isErrorPath = pathname.endsWith("/error");
   const adminDashboard = pathname.startsWith("/Admin")
-  const excludedRoutes = ["/signup", "/login", "/studio/structure"];
-  const hideHeaderFooter = excludedRoutes.includes(pathname) || isStudioPath || isErrorPath;
+  const excludedHeaderRoutes = ["/signup", "/login", "/studio/structure"];
+  const excludedFooterRoutes = pathname.startsWith("/admin")
+  const hideHeaderFooter = excludedHeaderRoutes.includes(pathname) || isStudioPath || isErrorPath;  
+  const hideFooter = excludedFooterRoutes
   
 
   return (
     <>
       {!hideHeaderFooter && <Header />}
       {children}
-      {!hideHeaderFooter && <Footer />}
+      {!hideHeaderFooter && !hideFooter && <Footer />}
     </>
   );
 }
