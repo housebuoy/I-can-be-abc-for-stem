@@ -43,7 +43,7 @@ export default function Dashboard() {
       }, []);
 
   return (
-    <SidebarProvider className="min-h-screen pt-24 w-full">
+    <SidebarProvider className="pt-24 w-full">
         <AdminSidebar />
         <main>
             <SidebarTrigger className="z-50 fixed hover:text-indigo-600"/>
@@ -66,44 +66,44 @@ export default function Dashboard() {
                         <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
                         {/* Placeholder Table */}
                         <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transaction ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {loading ? (
-            // Skeleton loader while loading the data
-            <>
-              {[...Array(3)].map((_, index) => (
-                <tr key={index} className="animate-pulse">
-                  <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
-                  <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
-                  <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
-                  <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
-                </tr>
-              ))}
-            </>
-          ) : (
-            // Data rows
-            transactions?.map((transaction) => (
-              <tr key={transaction._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{transaction?.transactionId}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{transaction?.shippingDetails.fullName}</td>
-                <td className="px-6 py-4 whitespace-nowrap">${transaction?.total}</td>
-                <td className={`px-6 py-4 whitespace-nowrap ${transaction?.status === 'Paid' ? 'text-green-500' : 'text-yellow-500'}`}>
-                  {transaction?.status}
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transaction ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                {loading ? (
+                                    // Skeleton loader while loading the data
+                                    <>
+                                    {[...Array(3)].map((_, index) => (
+                                        <tr key={index} className="animate-pulse">
+                                        <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
+                                        <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
+                                        <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
+                                        <td className="px-6 py-4 whitespace-nowrap bg-gray-100 h-6"></td>
+                                        </tr>
+                                    ))}
+                                    </>
+                                ) : (
+                                    // Data rows
+                                    transactions?.map((transaction) => (
+                                    <tr key={transaction._id}>
+                                        <td className="px-6 py-4 whitespace-nowrap">{transaction?.transactionId}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{transaction?.shippingDetails.fullName}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">¢{transaction?.total}</td>
+                                        <td className={`px-6 py-4 whitespace-nowrap ${transaction?.status === 'Paid' ? 'text-green-500' : 'text-yellow-500'}`}>
+                                        {transaction?.status}
+                                        </td>
+                                    </tr>
+                                    ))
+                                )}
+                                </tbody>
+                            </table>
+                        </div>
                     </section>
                 </main>
             </div>
