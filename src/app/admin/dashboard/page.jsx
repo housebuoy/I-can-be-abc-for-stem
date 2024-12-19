@@ -1,5 +1,5 @@
 "use client"
-import Navbar from "@/components/navbar";
+// import Navbar from "@/components/navbar";
 import DashboardWidgets from "@/components/dashboard-widgets";
 import AdminSidebar from '@/components/AdminSidebar'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
