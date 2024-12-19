@@ -34,7 +34,9 @@ const LoginPage = () => {
             try {
                 // Attempt to sign in with Firebase authentication
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                
+                const user = userCredential.user
+                const token = await user.getIdToken();
+                console.log(token)
                 // Set success message if login is successful
                 setSuccess('Login successful!');
                 console.log('Logged in as:', userCredential.user);

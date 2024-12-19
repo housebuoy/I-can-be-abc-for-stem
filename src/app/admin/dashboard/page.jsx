@@ -5,42 +5,62 @@ import AdminSidebar from '@/components/AdminSidebar'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
+import { auth } from '../../../../firebase';
+import withAdminAuth from "@/lib/withAdminAuth";
 
-
-export default function Dashboard() {
+function Dashboard() {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         async function fetchTransactions() {
-          try {
-            const response = await fetch("/api/all-transactions");
-            if (!response.ok) {
-              throw new Error("Failed to fetch transactions");
+          const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+              console.error("User not authenticated");
+              setLoading(false);
+              return;
             }
-    
-            const data = await response.json();
-    
-            console.log("Fetched data:", data); // Debugging fetched data structure
-    
-            if (data.transactions) {
-              // Sort transactions by 'createdAt' field (most recent first)
-              const sortedTransactions = data.transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    
-              // Get only the first 4 most recent transactions
-              setTransactions(sortedTransactions.slice(0, 3));
-            } else {
-              console.warn("No transactions found in the API response.");
+      
+            try {
+              // Get the user's token
+              const token = await user.getIdToken();
+              console.log(`Token: ${token}`); // Log the token
+      
+              // Make the API request
+              const response = await fetch("/api/all-transactions", {
+                method: "GET",
+                headers: {
+                  "Authorization": `Bearer ${token}`,
+                },
+              });
+      
+              if (!response.ok) {
+                throw new Error("Failed to fetch transactions");
+              }
+      
+              const data = await response.json();
+      
+              if (data.transactions) {
+                const sortedTransactions = data.transactions.sort(
+                  (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+                setTransactions(sortedTransactions.slice(0, 3));
+              } else {
+                console.warn("No transactions found in the API response.");
+              }
+            } catch (error) {
+              console.error("Error fetching transactions:", error);
+            } finally {
+              setLoading(false);
             }
-    
-            setLoading(false); // Set loading to false after data is fetched
-          } catch (error) {
-            console.error("Error fetching transactions:", error);
-            setLoading(false);
-          }
+          });
+      
+          return () => unsubscribe(); // Cleanup the listener
         }
-    
+      
         fetchTransactions();
       }, []);
+      
 
   return (
     <SidebarProvider className="pt-24 w-full">
@@ -111,3 +131,5 @@ export default function Dashboard() {
     </SidebarProvider>
   );
 }
+
+export default withAdminAuth(Dashboard)

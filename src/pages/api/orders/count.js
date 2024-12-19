@@ -1,10 +1,12 @@
 const { MongoClient } = require("mongodb");
+import { verifyRole } from "../../../middleware/verifyRole"
 
 export default async function handler(req, res) {
   const { method } = req;
   const client = new MongoClient(process.env.MONGODB_URI);
 
   try {
+    await verifyRole("admin")(req, res, async () => {
     if (method !== "GET") {
       return res.status(405).json({ message: `Method ${method} Not Allowed` });
     }
@@ -74,8 +76,9 @@ export default async function handler(req, res) {
       revenueDifference,
       revenuePercentageChange,
     });
+    })
   } catch (error) {
-    console.error("Error in /api/orders/weekly-stats:", error);
+    console.error("Error in /api/orders/count:", error);
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   } finally {
     await client.close();

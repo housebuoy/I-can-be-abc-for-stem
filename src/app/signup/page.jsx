@@ -67,6 +67,24 @@ const SignUpPage = () => {
     
           // Update the user's profile name
           await updateProfile(userCredential.user, { displayName: fullName });
+
+          const response = await fetch("/api/register-user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              uid: userCredential.user.uid,
+              fullName,
+              email,
+            }),
+          });
+    
+          if (!response.ok) {
+            throw new Error("Failed to save user to database.");
+          }
+    
+          const responseData = await response.json();
+          console.log("User registered:", responseData);
+          
           router.push('/shop');
           setSuccess('Account created successfully! You can now log in.');
         } catch (error) {

@@ -113,6 +113,8 @@ const handlePaystackPayment = () => {
   const saveOrder = async (paymentReference) => {
     try {
       console.log(transactionId)
+      const idToken = await user.getIdToken();  // This is the ID token you need for your API requests
+      console.log(idToken);
         // const transactionId = generateTransactionId(user?.uid || "guest");
         const orderDetails = {
             userId: user?.uid || "guest",
