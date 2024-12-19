@@ -13,14 +13,24 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchTransactions() {
           try {
-            const response = await fetch("/api/transactions");
+            const response = await fetch("/api/all-transactions");
+            if (!response.ok) {
+              throw new Error("Failed to fetch transactions");
+            }
+    
             const data = await response.json();
     
-            // Sort transactions by 'createdAt' field (most recent first)
-            const sortedTransactions = data?.transactions?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            console.log("Fetched data:", data); // Debugging fetched data structure
     
-            // Get only the first 4 most recent transactions
-            setTransactions(sortedTransactions?.slice(0, 4));
+            if (data.transactions) {
+              // Sort transactions by 'createdAt' field (most recent first)
+              const sortedTransactions = data.transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+              // Get only the first 4 most recent transactions
+              setTransactions(sortedTransactions.slice(0, 3));
+            } else {
+              console.warn("No transactions found in the API response.");
+            }
     
             setLoading(false); // Set loading to false after data is fetched
           } catch (error) {
