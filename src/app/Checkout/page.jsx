@@ -3,14 +3,15 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "@/app/Context/CartProvider";
 import { getProductByCode, getCouponByCode } from "../../sanity/schemaTypes/queries";
 import { auth } from "../../../firebase";
-// import { PaystackButton } from 'react-paystack';
+import { ToastContainer, toast } from 'react-toastify';
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
 
 const Checkout = () => {
   const { cartItems, removeFromCart } = useCart();
   const [products, setProducts] = useState([]);
-  
+  const notify = (transactionId) => 
+    toast.info(`Order placed successfully! Transaction ID: ${transactionId}`);  
   const user = auth.currentUser;
   const [shippingDetails, setShippingDetails] = useState({
     fullName: user?.displayName || "",
@@ -48,7 +49,13 @@ const Checkout = () => {
     };
 }, []);
 
+const generateTransactionId = (userId) => {
+  const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
+  const randomString = Math.random().toString(36).substring(2, 8).toUpperCase(); // Random alphanumeric
+  return `${userId ? userId.slice(0, 4).toUpperCase() : "GUEST"}-${timestamp}-${randomString}`;
+};
 
+const transactionId = generateTransactionId(user?.uid || "guest");
 
 const handlePaystackPayment = () => {
   const handler = window.PaystackPop.setup({
@@ -56,7 +63,7 @@ const handlePaystackPayment = () => {
       email: user?.email || "guest@example.com", // Customer's email
       amount: Math.round(total * 100), // Amount in kobo
       currency: "GHS", // Currency (default is NGN)
-      ref: new Date().getTime().toString(), // Reference number
+      ref: transactionId, // Reference number
       callback: (response) => {
           // Handle successful payment
           console.log("Payment successful:", response);
@@ -105,11 +112,15 @@ const handlePaystackPayment = () => {
   // Save order details to the backend
   const saveOrder = async (paymentReference) => {
     try {
+      console.log(transactionId)
+        // const transactionId = generateTransactionId(user?.uid || "guest");
         const orderDetails = {
             userId: user?.uid || "guest",
+            transactionId,
             shippingDetails,
             cartItems: products,
             total,
+            status: "Pending",
             paymentReference,
         };
 
@@ -129,7 +140,7 @@ const handlePaystackPayment = () => {
         const responseData = await response.json();
         console.log("Order saved successfully:", responseData);
 
-        alert("Order placed successfully!");
+        notify(transactionId)
     } catch (error) {
         console.error("Error saving order:", error.message);
         alert("Failed to save order. Please contact support.");
@@ -231,6 +242,7 @@ const handlePaystackPayment = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-24">
+      <ToastContainer />
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Checkout</h1>
 

@@ -6,6 +6,9 @@ import { auth } from "../../../firebase"; // Your Firebase config
 import { MdLogout, MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/lib/ProtectedRoute";
+import { IoMdInformationCircle } from "react-icons/io";
+
+
 
 import {
   Tooltip,
@@ -26,6 +29,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 
 import { Button } from "@/components/ui/button"
 
@@ -36,6 +49,7 @@ const ProfilePage = () => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+  const [showAllTransactions, setShowAllTransactions] = useState(false);
   useEffect(() => {
     // Fetch user data on mount
     const user = auth.currentUser;
@@ -47,10 +61,45 @@ const ProfilePage = () => {
     }
   }, []);
 
-  const [transactions, setTransactions] = useState([
-    { id: 1, date: "2024-01-01", amount: 120, status: "Completed" },
-    { id: 2, date: "2024-01-15", amount: 200, status: "Pending" },
-  ]);
+  const [transactions, setTransactions] = useState([]);
+
+useEffect(() => {
+  const fetchTransactions = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        console.error("User is not logged in.");
+        return;
+      }
+
+      const response = await fetch(`/api/transactions?userId=${user.uid}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch transactions");
+      }
+
+      const data = await response.json();
+      setTransactions(data.transactions); // Assuming the API returns an object with a 'transactions' array
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
+  fetchTransactions();
+}, []);
+
+
+  // const [transactions, setTransactions] = useState([
+  //   { id: 1, date: "2024-01-01", amount: 120, status: "Completed" },
+  //   { id: 2, date: "2024-01-15", amount: 200, status: "Pending" },
+  // ]);
+
+  const displayedTransactions = showAllTransactions
+    ? transactions
+    : transactions.slice(0, 3);
+
+  const handleViewAllClick = () => {
+    setShowAllTransactions(!showAllTransactions);
+  };
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -248,30 +297,69 @@ const ProfilePage = () => {
             {/* Dashboard */}
             <div className="bg-indigo-50 p-4 rounded-md shadow-md">
               <h2 className="text-lg font-semibold text-gray-700 mb-4">Dashboard</h2>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <h3 className="text-sm font-bold text-gray-600">Transaction History</h3>
-                {transactions.map((transaction) => (
-                  <div
-                    key={transaction.id}
-                    className="p-2 border rounded bg-white flex justify-between items-center"
-                  >
-                    <span>{transaction.date}</span>
-                    <span className="text-gray-600">GH¢ {transaction.amount}</span>
-                    <span
-                      className={`px-2 py-1 text-xs rounded ${
-                        transaction.status === "Completed"
-                          ? "bg-green-200 text-green-800"
-                          : "bg-yellow-200 text-yellow-800"
-                      }`}
-                    >
-                      {transaction.status}
+
+                {/* Table for displaying transactions */}
+                <Table>
+                  <TableCaption>
+                    <span className="flex items-center gap-2">
+                      <IoMdInformationCircle className="text-indigo-600"/>
+                    Items purchased may take up to 48 hours to be processed and delivered
                     </span>
-                  </div>
-                ))}
-                <Link href="/orders" className="text-sm text-indigo-600 hover:underline">
-                  View All Orders
-                </Link>
+                    
+                  </TableCaption>
+                  <TableHeader className="bg-indigo-400">
+                    <TableRow>
+                      <TableHead className="text-white hover:bg-indigo-400">Transaction ID</TableHead>            
+                      <TableHead className="text-white hover:bg-indigo-400">Date Issued</TableHead>
+                      <TableHead className="text-white hover:bg-indigo-400">Amount</TableHead>
+                      <TableHead className="text-white hover:bg-indigo-400">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {displayedTransactions.length > 0 ? (
+                      displayedTransactions.map((transaction) => (
+                        <TableRow key={transaction.transactionId}>
+                          <TableCell className="font-medium">{transaction.transactionId}</TableCell>                
+                          <TableCell>{transaction.createdAt.slice(0, 10)}</TableCell>
+                          <TableCell className="text-right">GH₵ {transaction?.total?.toFixed(2)}</TableCell>
+                          <TableCell>
+                            <span
+                              className={`px-2 py-1 text-xs rounded ${
+                                transaction.status === "Completed"
+                                  ? "bg-green-200 text-green-800"
+                                  : transaction.status === "Pending"
+                                  ? "bg-yellow-200 text-yellow-800"
+                                  : "bg-red-200 text-red-800"
+                              }`}
+                            >
+                              {transaction.status}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan="4" className="text-center text-sm text-gray-500">
+                          No transactions found.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+
+                {/* Button to toggle View All */}
+                <div className="text-end mt-4">
+                  <button
+                    onClick={handleViewAllClick}
+                    className="px-2 py-1 text-sm bg-transparent text-indigo-600 underline rounded-md"
+                  >
+                    {showAllTransactions ? "Show Less" : "View All Orders"}
+                  </button>
+                </div>
               </div>
+
             </div>
           </div>
 

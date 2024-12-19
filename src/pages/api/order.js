@@ -14,19 +14,21 @@ export default async function handler(req, res) {
 
     switch (method) {
       case "POST": {
-        const { userId, shippingDetails, cartItems, total, paymentReference } = body;
+        const { userId, shippingDetails, cartItems, total, paymentReference, transactionId } = body;
 
         // Validate required fields
-        if (!userId || !shippingDetails || !cartItems || !total || !paymentReference) {
+        if (!userId || !shippingDetails || !cartItems || !total || !paymentReference || !transactionId) {
           return res.status(400).json({ message: "Missing required order fields" });
         }
 
         // Insert order into the database
         const order = {
           userId,
+          transactionId,
           shippingDetails,
-          cartItems,
+          cartItems,          
           total,
+          status: "Pending",
           paymentReference,
           createdAt: new Date(),
         };
