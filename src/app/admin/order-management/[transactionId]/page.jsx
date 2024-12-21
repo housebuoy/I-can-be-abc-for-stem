@@ -422,7 +422,7 @@ export default function TransactionDetail() {
                     <Label htmlFor="deliveryCompany">Delivery Company</Label>
                     <Input
                       id="deliveryCompany"
-                      value={order.deliveryCompany || deliveryCompany}
+                      value={deliveryCompany}
                       onChange={(e) => setDeliveryCompany(e.target.value)}
                       disabled={!isEditing}
                     />
@@ -431,7 +431,7 @@ export default function TransactionDetail() {
                     <Label htmlFor="officerInCharge">Officer in Charge</Label>
                     <Input
                       id="officerInCharge"
-                      value={order.officerInCharge || officerInCharge}
+                      value={officerInCharge}
                       onChange={(e) => setOfficerInCharge(e.target.value)}
                       disabled={!isEditing}
                     />
@@ -440,7 +440,7 @@ export default function TransactionDetail() {
                     <Label htmlFor="officerInChargeContact">Contact</Label>
                     <Input
                       id="officerInChargeContact"
-                      value={order.officerInChargeContact || officerInChargeContact}
+                      value={officerInChargeContact}
                       onChange={(e) => setOfficerInChargeContact(e.target.value)}
                       disabled={!isEditing}
                     />
@@ -448,7 +448,7 @@ export default function TransactionDetail() {
                   <div className="mt-4">
                     <Label htmlFor="orderStatus">Order Status</Label>
                     <Select 
-                      value={status || order.status} 
+                      value={order.status} 
                       onValueChange={(value) => setStatus(value)} 
                       disabled={!isEditing}
                     >
