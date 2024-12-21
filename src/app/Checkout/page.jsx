@@ -124,6 +124,8 @@ const handlePaystackPayment = () => {
             total,
             status: "Pending",
             paymentReference,
+            couponCode: couponCode,
+            discountAmount: discount,
         };
 
         console.log("Sending order details:", orderDetails);

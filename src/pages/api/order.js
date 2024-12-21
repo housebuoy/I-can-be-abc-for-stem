@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     switch (method) {
       case "POST": {
-        const { userId, shippingDetails, cartItems, total, paymentReference, transactionId } = body;
+        const { userId, shippingDetails, cartItems, total, paymentReference, transactionId, couponCode, discountAmount } = body;
 
         // Validate required fields
         if (!userId || !shippingDetails || !cartItems || !total || !paymentReference || !transactionId) {
@@ -30,6 +30,8 @@ export default async function handler(req, res) {
           total,
           status: "Pending",
           paymentReference,
+          couponCode, 
+          discountAmount,
           createdAt: new Date(),
         };
         const result = await ordersCollection.insertOne(order);

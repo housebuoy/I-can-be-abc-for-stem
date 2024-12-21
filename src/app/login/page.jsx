@@ -8,6 +8,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../firebase';
 import Link from 'next/link';
 
+
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
@@ -36,13 +37,13 @@ const LoginPage = () => {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user
                 const token = await user.getIdToken();
-                console.log(token)
+                console.log("uid: " + user.uid)
                 // Set success message if login is successful
                 setSuccess('Login successful!');
                 console.log('Logged in as:', userCredential.user);
 
                 // Redirect user to the dashboard or home page after successful login
-                router.push('/shop');  // Adjust the route as per your project structure
+                router.back() // Adjust the route as per your project structure
             } catch (error) {
                 console.error('Error logging in:', error);
                 setError(error.message || 'Failed to log in. Please try again.');
@@ -56,7 +57,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="flex h-screen z-50">
+        <div className="flex min-h-screen z-50">
             {/* Left Section */}
             <div className="flex-1 sm:flex flex-col justify-center items-center text-white px-10 bg-indigo-600 hidden">
                 <h1 className="text-3xl font-bold mb-4 text-center">Welcome back! <br /> Login to explore STEM!</h1>

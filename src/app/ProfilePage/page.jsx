@@ -7,7 +7,7 @@ import { MdLogout, MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/lib/ProtectedRoute";
 import { IoMdInformationCircle } from "react-icons/io";
-
+import HashLoader from "react-spinners/HashLoader";
 
 
 import {
@@ -43,11 +43,17 @@ import {
 import { Button } from "@/components/ui/button"
 
 
-
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 const ProfilePage = () => {
+  const [color, setColor] = useState("#4f46e5");
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState(null);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   useEffect(() => {
@@ -63,29 +69,65 @@ const ProfilePage = () => {
 
   const [transactions, setTransactions] = useState([]);
 
-useEffect(() => {
-  const fetchTransactions = async () => {
-    try {
-      const user = auth.currentUser;
-      if (!user) {
-        console.error("User is not logged in.");
-        return;
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      setLoading(true); // Start loading state
+
+      try {
+        // Wait for Firebase to resolve the current user
+        const waitForUser = new Promise((resolve, reject) => {
+          const unsubscribe = auth.onAuthStateChanged((user) => {
+            unsubscribe(); // Clean up the listener
+            resolve(user);
+          }, reject);
+        });
+
+        const user = await waitForUser;
+
+        if (!user) {
+          alert("User is not logged in.");
+          setLoading(false); // End loading if user is not logged in
+          return;
+        }
+
+        // Fetch transactions for the current user
+        const response = await fetch(`/api/transactions?userId=${user.uid}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch transactions");
+        }
+
+        const data = await response.json();
+        setTransactions(data.transactions || []); // Handle missing data gracefully
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+        alert("An error occurred while fetching transactions.");
+      } finally {
+        setLoading(false); // End loading state
       }
+    };
 
-      const response = await fetch(`/api/transactions?userId=${user.uid}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch transactions");
-      }
+    fetchTransactions();
+  }, []);
 
-      const data = await response.json();
-      setTransactions(data.transactions); // Assuming the API returns an object with a 'transactions' array
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-full pt-24 min-h-screen">
+        <HashLoader
+        color={color}
+        loading={loading}
+        cssOverride={override}
+        size={100}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+        {/* <p>Loading transactions...</p> */}
+      </div>
+    );
+  }
 
-  fetchTransactions();
-}, []);
+  if (transactions.length === 0) {
+    return <p>No transactions found.</p>;
+  }
 
 
   // const [transactions, setTransactions] = useState([

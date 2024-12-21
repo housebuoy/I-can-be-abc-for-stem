@@ -17,12 +17,12 @@ import {
 const items = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/admin/dashboard",
     icon: Home,
   },
   {
     title: "Orders management",
-    url: "#",
+    url: "/admin/order-management",
     icon: ShoppingCart,
   },
   {
@@ -37,7 +37,7 @@ const items = [
   },
   {
     title: "Products Management",
-    url: "studio/structure",
+    url: "/studio/structure",
     icon: Package,
   },
   {
