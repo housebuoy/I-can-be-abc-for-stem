@@ -173,7 +173,7 @@ export default function OrderManagement() {
         {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Render skeletons */}
-              {Array.from({ length: window.innerWidth >= 640 ? 6 : 4 }).map((_, index) => (
+              {Array.from({ length: 6 }).map((_, index) => (
                 <Skeleton key={index} className="p-4 shadow-md">
                   <div className="flex justify-between items-center">
                     <Skeleton className="h-6 w-1/2 bg-gray-300" /> {/* Full name skeleton */}

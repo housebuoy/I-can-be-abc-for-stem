@@ -32,7 +32,7 @@ const withAdminAuth = (WrappedComponent) => {
       };
 
       checkAdminRole();
-    }, [router]); // Added router to dependencies
+    }, ); // Added router to dependencies
 
     if (loading) {
       return <p>Loading...</p>; // Show a loading message while verifying
