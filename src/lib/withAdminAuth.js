@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "../../firebase";
 
 const withAdminAuth = (WrappedComponent) => {
-  return (props) => {
+  const AdminAuthWrapper = (props) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -32,7 +32,7 @@ const withAdminAuth = (WrappedComponent) => {
       };
 
       checkAdminRole();
-    }, []);
+    }, [router]); // Added router to dependencies
 
     if (loading) {
       return <p>Loading...</p>; // Show a loading message while verifying
@@ -40,6 +40,11 @@ const withAdminAuth = (WrappedComponent) => {
 
     return <WrappedComponent {...props} />;
   };
+
+  // Set a display name for debugging
+  AdminAuthWrapper.displayName = `withAdminAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return AdminAuthWrapper;
 };
 
 export default withAdminAuth;
