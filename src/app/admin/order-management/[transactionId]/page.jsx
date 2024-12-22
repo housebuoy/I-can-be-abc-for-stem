@@ -448,7 +448,7 @@ export default function TransactionDetail() {
                   <div className="mt-4">
                     <Label htmlFor="orderStatus">Order Status</Label>
                     <Select 
-                      value={order.status} 
+                      value={order.status || status} 
                       onValueChange={(value) => setStatus(value)} 
                       disabled={!isEditing}
                     >

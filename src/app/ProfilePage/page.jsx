@@ -92,12 +92,16 @@ const ProfilePage = () => {
 
         // Fetch transactions for the current user
         const response = await fetch(`/api/transactions?userId=${user.uid}`);
-        if (!response.ok) {
+        if (response.status === 404) {
+          // Handle 404 error (No transactions found)
+          console.warn("No transactions found for this user.");
+          setTransactions([]); // Ensure transactions array is empty
+        } else if (!response.ok) {
           throw new Error("Failed to fetch transactions");
-        }
-
-        const data = await response.json();
-        setTransactions(data.transactions || []); // Handle missing data gracefully
+        } else {
+          const data = await response.json();
+          setTransactions(data.transactions || []); // Handle missing data gracefully
+        } // Handle missing data gracefully
       } catch (error) {
         console.error("Error fetching transactions:", error);
         alert("An error occurred while fetching transactions.");
@@ -125,9 +129,9 @@ const ProfilePage = () => {
     );
   }
 
-  if (transactions.length === 0) {
-    return <p>No transactions found.</p>;
-  }
+  // if (transactions.length === 0) {
+  //   return <p className="pt-24">No transactions found.</p>;
+  // }
 
 
   // const [transactions, setTransactions] = useState([
