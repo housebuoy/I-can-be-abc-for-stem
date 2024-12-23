@@ -2,11 +2,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "../../firebase";
+import { HashLoader } from "react-spinners";
 
 const withAdminAuth = (WrappedComponent) => {
   const AdminAuthWrapper = (props) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+    const override = {
+      display: "block",
+      margin: "0 auto",
+      borderColor: "red",
+    };
+    const [color, setColor] = useState("#4f46e5");
 
     useEffect(() => {
       const checkAdminRole = async () => {
@@ -35,7 +42,18 @@ const withAdminAuth = (WrappedComponent) => {
     }, []); // Added router to dependencies
 
     if (loading) {
-      return <p className="pt-24">Loading...</p>; // Show a loading message while verifying
+      return (
+        <div className="flex flex-col justify-center items-center h-full pt-24 min-h-screen">
+          <HashLoader
+            color={color}
+            loading={loading}
+            cssOverride={override}
+            size={100}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )
     }
 
     return <WrappedComponent {...props} />;
