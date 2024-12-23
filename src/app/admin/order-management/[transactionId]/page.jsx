@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button"; // Button Component
 import { Input } from "@/components/ui/input"; // Input Component
 import { Label } from "@/components/ui/label"; // Label Component
@@ -157,6 +158,36 @@ export default function TransactionDetail() {
     return <p>No order details available.</p>;
   }
 
+  const handleDownloadOrder = () => {
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text(`Order Details: ${order.transactionId}`, 10, 10);
+
+    doc.setFontSize(14);
+    doc.text("Primary Details", 10, 20);
+    doc.text(`Transaction ID: ${order.transactionId}`, 10, 30);
+    doc.text(`User ID: ${order.userId}`, 10, 40);
+    doc.text(`Order Date: ${new Date(order.createdAt).toLocaleDateString()}`, 10, 50);
+    doc.text(`Status: ${order.status}`, 10, 60);
+    doc.text(`Customer Name: ${order.shippingDetails?.fullName}`, 10, 70);
+    doc.text(`Customer Phone: ${order.shippingDetails?.phone}`, 10, 80);
+
+    doc.text("Cart Details", 10, 100);
+    order.cartItems?.forEach((item, index) => {
+      const offset = 110 + index * 10;
+      doc.text(`${index + 1}. ${item.title} - Quantity: ${item.quantity}`, 10, offset);
+    });
+
+    doc.text("Payment Details", 10, 130);
+    doc.text(`Coupon Code: ${order.couponCode || "Null"}`, 10, 140);
+    doc.text(`Discounted Amount: GH¢ ${order.discountedAmount || "0"}`, 10, 150);
+    doc.text(`Total Amount: GH¢ ${order.total}`, 10, 160);
+
+    doc.save(`order_${order.transactionId}.pdf`);
+  };
+  
+
   return (
     <SidebarProvider className="pt-24 w-full bg-gray-100">
       <AdminSidebar />
@@ -196,7 +227,15 @@ export default function TransactionDetail() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="text-2xl font-semibold mb-4 pt-14 text-indigo-600">Order Details</h1>
+        <div className="flex justify-between items-center mb-4 pt-14">
+          <h1 className="text-2xl font-semibold text-indigo-600">Order Details</h1>
+          <Button
+            className="bg-indigo-600 text-white"
+            onClick={() => handleDownloadOrder()}
+          >
+            Download Order
+          </Button>
+        </div>
         {/* <p>
           <strong>Transaction ID:</strong> {order.transactionId}
         </p> */}
