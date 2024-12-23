@@ -102,6 +102,13 @@ export default function TransactionDetail() {
     fetchOrderDetails();
   }, [transactionId]);
 
+  useEffect(() => {
+    if (order?.status) {
+      setStatus(order.status);
+    }
+  }, [order]);
+  
+
   const handleSaveChanges = async () => {
     try {
       if (!deliveryCompany || !officerInCharge || !officerInChargeContact || !status) {
@@ -448,7 +455,7 @@ export default function TransactionDetail() {
                   <div className="mt-4">
                     <Label htmlFor="orderStatus">Order Status</Label>
                     <Select 
-                      value={order.status || status} 
+                      value={status} 
                       onValueChange={(value) => setStatus(value)} 
                       disabled={!isEditing}
                     >
