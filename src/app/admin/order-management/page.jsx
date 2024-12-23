@@ -9,6 +9,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Card } from "@/components/ui/card"; // Use ShadCN card component
 import { FaCalendarAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import withAdminAuth from "@/lib/withAdminAuth";
 
 import {
   Popover,
@@ -17,11 +18,13 @@ import {
 } from "@/components/ui/popover"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default function OrderManagement() {
+function OrderManagement() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const itemsPerPage = 6;
   const router = useRouter();
 
   useEffect(() => {
@@ -123,6 +126,23 @@ export default function OrderManagement() {
     router.push(`/admin/order-management/${transactionId}`);
   };
 
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+
   return (
     <SidebarProvider className="pt-24 w-full">
       <AdminSidebar />
@@ -190,55 +210,89 @@ export default function OrderManagement() {
               ))}
             </div>
           ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredOrders.map((order) => (
-              <Card key={order.transactionId} className="p-4 shadow-md">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-medium">
-                    {order.shippingDetails.fullName}
-                  </h2>
-                  <span className={`rounded-full px-3 py-1 text-white text-sm ${
-                    order.status.toLowerCase() === "delivered"
-                      ? "bg-green-500"
-                      : order.status.toLowerCase() === "cancelled"
-                      ? "bg-red-500"
-                      : "bg-yellow-500"
-                  }`}>
-                    {order.status}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Sent on: {new Date(order.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Transaction ID: {order.transactionId}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Items: {order.cartItems[0].title}{" "}
-                  {order.cartItems.length > 1 && (
-                    <span className="text-end">+ {order.cartItems.length - 1} more</span>
-                  )}
-                </p>
-                <div className="flex gap-2 mt-4">
-                  <Button
-                    onClick={() =>
-                      handleStatusChange(order.transactionId, "Delivered")
-                    }
-                  >
-                    Mark as Delivered
-                  </Button>
-                  <Button
-                    onClick={() => handleViewOrder(order.transactionId)}
-                    variant="secondary"
-                  >
-                    View
-                  </Button>
-                </div>
-              </Card>
-            ))}
+            <div>
+            {/* Paginated orders */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedOrders.map((order) => (
+                <Card key={order.transactionId} className="p-4 shadow-md">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-medium">
+                      {order.shippingDetails.fullName.length > 15
+                        ? `${order.shippingDetails.fullName.slice(0, 15)}...`
+                        : order.shippingDetails.fullName}
+                    </h2>
+                    <span
+                      className={`rounded-full px-2 py-2 text-white text-xs ${
+                        order.status.toLowerCase() === "delivered"
+                          ? "bg-green-500"
+                          : order.status.toLowerCase() === "cancelled"
+                          ? "bg-red-500"
+                          : "bg-yellow-500"
+                      }`}
+                    >
+                      {/* {order.status} */}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Sent on: {new Date(order.createdAt).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Transaction ID: {order.transactionId}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Items: {order.cartItems[0].title}{" "}
+                    {order.cartItems.length > 1 && (
+                      <span className="text-end text-indigo-600">
+                        + {order.cartItems.length - 1} more
+                      </span>
+                    )}
+                  </p>
+                  <div className="flex gap-2 mt-4 justify-between">
+                    <Button
+                      onClick={() =>
+                        handleStatusChange(order.transactionId, "Delivered")
+                      }
+                      className="bg-green-500"
+                    >
+                      Mark as Delivered
+                    </Button>
+                    <Button
+                      onClick={() => handleViewOrder(order.transactionId)}
+                      className="bg-indigo-500 text-white"
+                    >
+                      View
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-between items-center mt-4">
+              <Button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                variant="secondary"
+                className="bg-gray-200 text-gray-700"
+              >
+                Previous
+              </Button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                onClick={handleNextPage}
+                variant="secondary"
+                disabled={currentPage === totalPages}
+                className="bg-gray-200 text-gray-700"
+              >
+                Next
+              </Button>
+            </div>
           </div>
         )}
       </div>
     </SidebarProvider>
   );
 }
+
+export default withAdminAuth(OrderManagement);

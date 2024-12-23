@@ -25,7 +25,7 @@ const withAdminAuth = (WrappedComponent) => {
           }
 
           const token = await user.getIdTokenResult();
-
+          console.log(`Token: ${token}`); // Log the token
           // Check for the admin role
           if (!token.claims.role || token.claims.role !== "admin") {
             throw new Error("Not an admin");
@@ -39,7 +39,7 @@ const withAdminAuth = (WrappedComponent) => {
       };
 
       checkAdminRole();
-    }, []); // Added router to dependencies
+    }); // Added router to dependencies
 
     if (loading) {
       return (

@@ -115,7 +115,7 @@ function Dashboard() {
                                         <td className="px-6 py-4 whitespace-nowrap">{transaction?.transactionId}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{transaction?.shippingDetails.fullName}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">¢{transaction?.total}</td>
-                                        <td className={`px-6 py-4 whitespace-nowrap ${transaction?.status === 'Paid' ? 'text-green-500' : 'text-yellow-500'}`}>
+                                        <td className={`px-6 py-4 whitespace-nowrap ${transaction?.status.toLowerCase() === 'delivered' ? 'text-green-500' : transaction?.status.toLowerCase() === "cancelled" ? 'text-red-500' : "text-yellow-500"}`}>
                                         {transaction?.status}
                                         </td>
                                     </tr>
