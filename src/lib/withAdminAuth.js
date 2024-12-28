@@ -15,36 +15,40 @@ const withAdminAuth = (WrappedComponent) => {
     };
     const [color, setColor] = useState("#4f46e5");
 
+    
     useEffect(() => {
       const checkAdminRole = async () => {
         try {
           const user = auth.currentUser;
-      
+    
           if (!user) {
             console.error("No authenticated user");
-            throw new Error("User not authenticated");
+            router.push("/not-authorized");
+            return;
           }
-      
-          // Force token refresh
-          const token = await user.getIdTokenResult(true);
-      
-          console.log("Token claims:", token.claims);
-      
-          if (!token.claims.role || token.claims.role !== "admin") {
-            console.error("User is not an admin");
-            throw new Error("Not an admin");
+    
+          const token = await user.getIdTokenResult(true); // Force token refresh
+          console.log("Token Claims:", token.claims);
+    
+          // Ensure `role` exists and is `admin`
+          if (token.claims.role !== "admin") {
+            console.error("Role validation failed. Claims:", token.claims);
+            router.push("/not-authorized");
+            return;
           }
-      
+    
+          console.log("User is an admin");
           setLoading(false); // Allow access
         } catch (error) {
-          console.error("Error checking admin role:", error);
+          console.error("Error validating role:", error);
           router.push("/not-authorized");
         }
       };
-      
-
+    
       checkAdminRole();
-    }); // Added router to dependencies
+    }, [router]); // Ensure `router` is included in dependencies
+    
+    
 
     if (loading) {
       return (
