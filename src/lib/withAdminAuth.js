@@ -19,18 +19,26 @@ const withAdminAuth = (WrappedComponent) => {
     useEffect(() => {
       const checkAdminRole = async () => {
         try {
-          const user = auth.currentUser;
+          // Wait until the user object is populated
+          const waitForAuth = new Promise((resolve, reject) => {
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+              unsubscribe();
+              if (user) {
+                resolve(user);
+              } else {
+                reject(new Error("User not authenticated"));
+              }
+            });
+          });
     
-          if (!user) {
-            console.error("No authenticated user");
-            router.push("/not-authorized");
-            return;
-          }
+          const user = await waitForAuth; // Wait for the user to load
+          console.log("Authenticated User:", user);
     
-          const token = await user.getIdTokenResult(true); // Force token refresh
+          // Fetch the token and claims
+          const token = await user.getIdTokenResult(true); // Refresh the token
           console.log("Token Claims:", token.claims);
     
-          // Ensure `role` exists and is `admin`
+          // Check for admin role
           if (token.claims.role !== "admin") {
             console.error("Role validation failed. Claims:", token.claims);
             router.push("/not-authorized");
@@ -40,13 +48,14 @@ const withAdminAuth = (WrappedComponent) => {
           console.log("User is an admin");
           setLoading(false); // Allow access
         } catch (error) {
-          console.error("Error validating role:", error);
+          console.error("Error during admin check:", error);
           router.push("/not-authorized");
         }
       };
     
       checkAdminRole();
-    }, [router]); // Ensure `router` is included in dependencies
+    }, [router]); // Include router in dependencies
+    // Ensure `router` is included in dependencies
     
     
 
