@@ -19,24 +19,29 @@ const withAdminAuth = (WrappedComponent) => {
       const checkAdminRole = async () => {
         try {
           const user = auth.currentUser;
-
+      
           if (!user) {
+            console.error("No authenticated user");
             throw new Error("User not authenticated");
           }
-
-          const token = await user.getIdTokenResult();
-          console.log(`Token: ${token}`); // Log the token
-          // Check for the admin role
+      
+          // Force token refresh
+          const token = await user.getIdTokenResult(true);
+      
+          console.log("Token claims:", token.claims);
+      
           if (!token.claims.role || token.claims.role !== "admin") {
+            console.error("User is not an admin");
             throw new Error("Not an admin");
           }
-
+      
           setLoading(false); // Allow access
         } catch (error) {
-          console.error(error);
-          router.push("/not-authorized"); // Redirect non-admins to the homepage or login page
+          console.error("Error checking admin role:", error);
+          router.push("/not-authorized");
         }
       };
+      
 
       checkAdminRole();
     }); // Added router to dependencies

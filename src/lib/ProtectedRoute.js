@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         // If no user is logged in, redirect to the login page
-        router.push("/");
+        router.push("/not-authorized");
       }
     });
 
