@@ -372,12 +372,16 @@ const ProfilePage = () => {
                           <TableCell className="text-right">GH₵ {transaction?.total?.toFixed(2)}</TableCell>
                           <TableCell>
                             <span
-                              className={`px-2 py-1 text-xs rounded ${
+                              className={`px-2 py-1  rounded text-center ${
                                 transaction.status === "Completed"
-                                  ? "bg-green-200 text-green-800"
+                                  ? "text-green-500 "
+                                  :transaction.status === "Out for Delivery"
+                                  ? "text-blue-500"
                                   : transaction.status === "Pending"
-                                  ? "bg-yellow-200 text-yellow-800"
-                                  : "bg-red-200 text-red-800"
+                                  ? "text-yellow-500 "
+                                  : transaction.status === "Returned"
+                                  ? "text-orange-500"
+                                  : "text-red-500 "
                               }`}
                             >
                               {transaction.status}

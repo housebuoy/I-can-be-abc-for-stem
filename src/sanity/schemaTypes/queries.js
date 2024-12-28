@@ -35,12 +35,19 @@ export async function getProducts(sortOption = "default") {
       code,
       category->{
         title
-      }
+      },
+      "count": count(*[_type == "product"])
     }
   `;
+
+  const countQuery = `count(*[_type == "product"])`;
+  const [count] = await Promise.all([
+    client.fetch(countQuery),
+  ]);
+
   
   const products = await client.fetch(query);
-  return products;
+  return {products, count};
 }
 
 export async function getCategories() {

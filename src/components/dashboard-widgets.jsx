@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import { auth } from '../../firebase';
+import { getProducts } from "@/sanity/schemaTypes/queries";
 
 export default function DashboardWidgets() {
 
@@ -10,6 +11,8 @@ export default function DashboardWidgets() {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [productCount, setProductCount] = useState(0);
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
           if (!user) {
@@ -17,6 +20,7 @@ export default function DashboardWidgets() {
             setLoading(false);
             return;
           }
+
     
           try {
             const token = await user.getIdToken();
@@ -60,8 +64,20 @@ export default function DashboardWidgets() {
                     setLoading(false);
                 }
               };
+
+              const fetchProducts = async () => {
+                try {
+                  const { count } = await getProducts();
+                  setProductCount(count);
+                  // Use the products array as needed
+                } catch (err) {
+                  setError("Failed to fetch product data");
+                } finally {
+                  setLoading(false);
+                }
+              };
     
-            // Fetch data after getting the token
+            fetchProducts();
             fetchOrderData();
             fetchUserData()
           } catch (authError) {
@@ -134,12 +150,21 @@ export default function DashboardWidgets() {
             </CardContent>
       </Card>
       <Card>
-        <CardHeader>
+        <CardHeader className="text-center">
           <CardTitle>Products</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold">123</p>
-          <p className="text-sm text-gray-500">+8 new this week</p>
+        <CardContent className="text-center">
+          {loading ? (
+            <div className="space-y-2">
+              <Skeleton className="h-6 w-full bg-gray-300" />
+              <Skeleton className="h-4 w-full bg-gray-300" />
+            </div>
+          ) : (
+            <>
+              <p className="text-3xl font-bold">{productCount}</p>
+              <p className="text-sm text-gray-500">Total Product Counts</p>
+            </>
+          )}
         </CardContent>
       </Card>
     </div>

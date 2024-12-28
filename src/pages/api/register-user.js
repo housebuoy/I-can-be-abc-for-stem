@@ -26,7 +26,7 @@ const handler = async (req, res) => {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { uid, fullName, email } = req.body;
+  const { uid, fullName, email} = req.body;
 
   // Validate required fields
   if (!uid || !fullName || !email) {
@@ -49,6 +49,7 @@ const handler = async (req, res) => {
       uid,
       fullName,
       email,
+      role: "user",
       createdAt: new Date(),
     });
 

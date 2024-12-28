@@ -151,7 +151,7 @@ function OrderManagement() {
       </main>
       <div className="order-management px-10 w-full">
         <div className="sm:flex sm:flex-row justify-between items-end mb-6 w-full">
-          <h1 className="sm:text-2xl text-xl font-semibold">Order Management</h1>
+          <h1 className="sm:text-2xl text-xl font-semibold text-indigo-600">Order Management</h1>
           <div className="flex items-end justify-between sm:gap-2">
             <Popover>
               <PopoverTrigger asChild>
@@ -171,7 +171,7 @@ function OrderManagement() {
             {/* Dropdown menu for sorting by status */}
             <DropdownMenu className="bg-indigo-600">
               <DropdownMenuTrigger asChild>
-                <Button className="bg-indigo-600 outline-none h-8 sm:h-auto">Sort by Status</Button>
+                <Button className="bg-indigo-600 outline-none h-8 sm:h-auto">Filter by Status</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => setSelectedStatus("")}>
@@ -223,10 +223,14 @@ function OrderManagement() {
                     </h2>
                     <span
                       className={`rounded-full px-2 py-2 text-white text-xs ${
-                        order.status.toLowerCase() === "delivered"
+                        order.status.toLowerCase() === "delivered" || order.status.toLowerCase() === "completed"
                           ? "bg-green-500"
                           : order.status.toLowerCase() === "cancelled"
                           ? "bg-red-500"
+                          : order.status.toLowerCase() === "Returned"
+                          ? "bg-orange-500"
+                          : order.status.toLowerCase() === "Out for Delivery"
+                          ? "bg-blue-500"
                           : "bg-yellow-500"
                       }`}
                     >

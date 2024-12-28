@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import signUpImage from '../../../public/images/signup/side-picture.svg';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';  // Import useRouter to handle redirects
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, getAuth } from 'firebase/auth';
 import { auth } from '../../../firebase';
 import Link from 'next/link';
 
@@ -22,6 +22,18 @@ const LoginPage = () => {
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
+
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+        // Password reset email sent!
+        // ..
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+    });
 
     // Handle form submission for login
     const handleSubmit = async (e) => {
@@ -110,7 +122,7 @@ const LoginPage = () => {
                                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                                 </button>
                             </div>
-                            <p className='mt-2 text-gray-600 text-right text-sm'><Link href="/signup" className='hover:text-indigo-600'>Forgot Password?</Link></p>
+                            <p className='mt-2 text-gray-600 text-right text-sm'><button onClick={()=> sendPasswordResetEmail}  className='hover:text-indigo-600'>Forgot Password?</button></p>
                         </div>
 
                         {/* Terms and Conditions */}

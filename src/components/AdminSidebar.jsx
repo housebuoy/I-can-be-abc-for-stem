@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "Users management",
-    url: "#",
+    url: "/admin/user-management",
     icon: Users,
   },
   {
