@@ -12,6 +12,7 @@ import { useSearch } from "@/app/Context/SearchContext"; // Import SearchContext
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton"; 
 import { ToastContainer, toast } from 'react-toastify';
+import { isArray } from "sanity";
 
 const ShopComponent = () => {
   const { searchQuery } = useSearch(); // Access the global search query
@@ -50,29 +51,47 @@ const ShopComponent = () => {
   // Fetch all products when the component mounts
   useEffect(() => {
     async function fetchProducts() {
-      const data = await getProducts();
-      setProducts(data);
-      setFilteredProducts(data); // Initialize filtered products with all products
-      setDisplayProducts(data.slice(0, resultsPerPage));
-      setLoading(false); // Set loading to false once data is fetched
+      try {
+        const data = await getProducts(); // Avoid shadowing state
+        console.log("Fetched products:", data);
+        setProducts(data);
+        if (Array.isArray(data)) {
+          console.log("fetchedProducts is an array:");
+        }
+        console.log("products:", data);
+        if (Array.isArray(data)) {
+          console.log("Products is an array 1:", data);
+        }
+        setFilteredProducts(data); // Initialize filtered products
+        setDisplayProducts(data?.slice(0, resultsPerPage)); // Paginate products
+        setLoading(false); // Mark as loaded
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     }
     fetchProducts();
   }, [resultsPerPage]);
+  
 
   // Filter products based on the search query
   useEffect(() => {
+    console.log("products 23:", products);
+    if (!Array.isArray(products)) {
+      console.log("Products is not an array 23:", products);
+    }
     const searchResults = products.filter((product) =>
-      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase())
+      product?.title?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      product?.description?.toLowerCase().includes(searchQuery?.toLowerCase())
     );
     setFilteredProducts(searchResults);
     setCurrentPage(1); // Reset to the first page after a new search
   }, [searchQuery, products]);
+  
 
   useEffect(() => {
     if (category) {
-      const filteredByCategory = products.filter(
-        (product) => product.category?.title.toLowerCase() === category.toLowerCase()
+      const filteredByCategory = products?.filter(
+        (product) => product?.category?.title.toLowerCase() === category?.toLowerCase()
       );
       setFilteredProducts(filteredByCategory); // Set filtered products to the filtered category products
     } else {
@@ -84,7 +103,7 @@ const ShopComponent = () => {
   useEffect(() => {
     const startIndex = (currentPage - 1) * resultsPerPage;
     const endIndex = startIndex + resultsPerPage;
-    setDisplayProducts(filteredProducts.slice(startIndex, endIndex));
+    setDisplayProducts(filteredProducts?.slice(startIndex, endIndex));
   }, [filteredProducts, currentPage, resultsPerPage]);
 
   // Handle page changes
@@ -97,8 +116,8 @@ const ShopComponent = () => {
       {/* Pass the filter function to ProductToolbar */}
       
       <ProductToolbar
-        onFilter={(category) => setFilteredProducts(products.filter((product) => product.category?.title === category))}
-        filteredProductsCount={filteredProducts.length}
+        onFilter={(category) => setFilteredProducts(products?.filter((product) => product?.category?.title === category))}
+        filteredProductsCount={filteredProducts?.length}
         products={products}
         setProducts={setProducts}
         setResultsPerPage={setResultsPerPage}

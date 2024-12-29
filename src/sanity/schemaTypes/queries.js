@@ -35,19 +35,89 @@ export async function getProducts(sortOption = "default") {
       code,
       category->{
         title
-      },
-      "count": count(*[_type == "product"])
+      }
     }
   `;
 
-  const countQuery = `count(*[_type == "product"])`;
-  const [count] = await Promise.all([
-    client.fetch(countQuery),
-  ]);
+  // const countQuery = `count(*[_type == "product"])`;
+  // const [count] = await Promise.all([
+  //   client.fetch(countQuery),
+  // ]);
 
   
-  const products = await client.fetch(query);
-  return {products, count};
+  // const products = await client.fetch(query);
+  try {
+    // Fetch products and count concurrently
+    const [products] = await Promise.all([
+      client.fetch(query),
+    ]);
+    
+    return products;
+  } catch (error) {
+    console.error("Error fetching products", error);
+    throw new Error("Failed to fetch products");
+  }
+}
+
+export async function getProductsCount(sortOption = "default") {
+  let sortQuery = '';  // Default value for sorting
+  
+  // Set sorting query based on the selected sortOption
+  switch (sortOption) {
+    case 'priceLowHigh':
+      sortQuery = 'price asc'; // Sort by price ascending
+      break;
+    case 'priceHighLow':
+      sortQuery = 'price desc'; // Sort by price descending
+      break;
+    case 'newest':
+      sortQuery = 'createdAt desc'; // Sort by creation date (newest first)
+      break;
+    case 'bestSelling':
+      sortQuery = 'salesCount desc'; // Assuming salesCount is a field for best-sellers
+      break;
+    default:
+      sortQuery = 'createdAt desc'; // Default sorting by newest products
+  }
+  
+
+  // Sanity GROQ query to fetch products with sorting
+  const query = `
+    *[_type == "product"] | order(${sortQuery}) {
+      title,
+      description,
+      price,
+      "imageUrl": image.asset->url,
+      isNew,
+      discount,
+      code,
+      category->{
+        title
+      }
+    }
+  `;
+
+    const countQuery = `count(*[_type == "product"])`;
+    const [count] = await Promise.all([
+      client.fetch(countQuery),
+    ]);
+    return { count };
+
+  
+  // const products = await client.fetch(query);
+
+  // try {
+  //   // Fetch products and count concurrently
+  //   const [products, count] = await Promise.all([
+  //     client.fetch(query),
+  //     client.fetch(countQuery),
+  //   ]);
+    
+  //   return { products: Array.isArray(products) ? products : [], count };
+  // } catch (error) {
+  //   console.error("Error fetching products or count:", error);
+  //   throw new Error("Failed to fetch products or count");
+  // }
 }
 
 export async function getCategories() {

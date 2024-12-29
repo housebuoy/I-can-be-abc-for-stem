@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import { auth } from '../../firebase';
-import { getProducts } from "@/sanity/schemaTypes/queries";
+import { getProductsCount } from "@/sanity/schemaTypes/queries";
 
 export default function DashboardWidgets() {
 
@@ -67,7 +67,7 @@ export default function DashboardWidgets() {
 
               const fetchProducts = async () => {
                 try {
-                  const { count } = await getProducts();
+                  const { count } = await getProductsCount()
                   setProductCount(count);
                   // Use the products array as needed
                 } catch (err) {
