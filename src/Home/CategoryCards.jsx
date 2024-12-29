@@ -152,7 +152,7 @@ if (loading) return (
               <li>Copying & Activity Book</li>
             </ul>
             <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">
-              <Link href="/shop">Shop Now</Link>
+              <Link href="/shop?category=STEAM%20Books">Shop Now</Link>
             </button>
           </div>
         </div>
