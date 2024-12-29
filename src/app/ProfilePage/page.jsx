@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/lib/ProtectedRoute";
 import { IoMdInformationCircle } from "react-icons/io";
 import HashLoader from "react-spinners/HashLoader";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 
 import {
@@ -342,7 +343,14 @@ const ProfilePage = () => {
 
             {/* Dashboard */}
             <div className="bg-indigo-50 p-4 rounded-md shadow-md">
-              <h2 className="text-lg font-semibold text-gray-700 mb-4">Dashboard</h2>
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-gray-700 mb-4">Dashboard</h2>
+                <Link href={`/admin/dashboard`} className="bg-gray-200 rounded py-1 px-1 cursor-pointer ">
+                  <MdAdminPanelSettings className="text-4xl text-indigo-600"/>
+                </Link>
+                
+              </div>
+              
               <div className="space-y-4">
                 <h3 className="text-sm font-bold text-gray-600">Transaction History</h3>
 
