@@ -11,6 +11,7 @@ import AdminSidebar from "@/components/AdminSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { LuChevronDown } from "react-icons/lu";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import withAdminAuth from "@/lib/withAdminAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +34,7 @@ import {
 } from "@/components/ui/accordion"
 
 
-export default function TransactionDetail() {
+function TransactionDetail() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -534,3 +535,4 @@ export default function TransactionDetail() {
     </SidebarProvider>
   );
 }
+export default withAdminAuth(TransactionDetail);

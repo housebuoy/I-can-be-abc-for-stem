@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import withAdminAuth from "@/lib/withAdminAuth";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -336,4 +337,4 @@ const UserManagement = () => {
   );
 };
 
-export default UserManagement;
+export default withAdminAuth(UserManagement);
