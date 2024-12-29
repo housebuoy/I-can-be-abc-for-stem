@@ -9,11 +9,11 @@ import { FaFacebookF, FaTiktok, FaGlobeAfrica } from 'react-icons/fa';
 import { BsInstagram, BsDribbble, BsLinkedin } from 'react-icons/bs';
 
 const socialIcons = [
-    { id: 1, icon: <FaGlobeAfrica />, link: 'https://dribbble.com' },    
-    { id: 2, icon: <BsLinkedin />, link: 'https://linkedin.com' },
-    { id: 3, icon: <BsInstagram />, link: 'https://instagram.com' },
-    { id: 4, icon: <FaFacebookF />, link: 'https://facebook.com' },
-    { id: 5, icon: <FaTiktok /> , link: 'https://behance.net' },    
+    { id: 1, icon: <FaGlobeAfrica />, link: 'https://kidsathomesp.com' },    
+    { id: 2, icon: <BsLinkedin />, link: 'https://linkedin.com/company/kids-at-home-ec' },
+    { id: 3, icon: <BsInstagram />, link: 'https://instagram.com/kidsathome_edu' },
+    { id: 4, icon: <FaFacebookF />, link: 'https://facebook.com/profile.php?id=61566503036239' },
+    { id: 5, icon: <FaTiktok /> , link: 'https://vm.tiktok.com/ZMkBu6bYf' },    
 ];
 
 const currentYear = new Date().getFullYear(); 
