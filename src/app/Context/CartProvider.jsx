@@ -10,6 +10,7 @@ export const CartProvider = ({ children }) => {
   const [fullName, setFullName] = useState("");
   const [userId, setUserId] = useState(null);
   const [isCartUpdated, setIsCartUpdated] = useState(false);
+  const [cartInitialized, setCartInitialized] = useState(false);
 
   // Fetch the cart from MongoDB
   const fetchCart = async (userId) => {
@@ -22,6 +23,7 @@ export const CartProvider = ({ children }) => {
       setCartItems((prevCartItems) => {
         // Merge local cart with database cart
         const dbCartItems = data.cartItems || [];
+        setCartInitialized(true);
         const mergedCart = [...prevCartItems];
   
         dbCartItems.forEach((dbItem) => {
@@ -37,6 +39,7 @@ export const CartProvider = ({ children }) => {
       });
     } catch (error) {
       console.log("Error fetching cart:", error);
+      setCartInitialized(true);
     }
   };
   
@@ -94,20 +97,21 @@ export const CartProvider = ({ children }) => {
   // Save cart to MongoDB whenever it changes
   useEffect(() => {
     let saveTimeout;
-    if (userId) {
+    if (userId && cartInitialized) {
       saveTimeout = setTimeout(() => {
         saveCart(cartItems);
       }, 500); // Save cart after 500ms delay
     }
   
     return () => clearTimeout(saveTimeout); // Cleanup timeout
-  }, [cartItems, userId]);
+  }, [cartItems, userId, cartInitialized]);
   
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        setCartItems,
         isCartUpdated,
         addToCart,
         removeFromCart,

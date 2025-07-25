@@ -142,7 +142,7 @@ const ShopComponent = () => {
           </div>
         ) : filteredProducts.length === 0 ? (
           <p className="text-center text-xl text-gray-600 pt-24">
-            No products found for <span className="text-indigo-600">&quot;{searchQuery}&quot;.</span>
+            No products found for <span className="text-indigo-600">&quot;{searchQuery !== "" ? searchQuery : category?.charAt(0).toUpperCase() + category.slice(1)}&quot;.</span>
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -174,7 +174,7 @@ const ShopComponent = () => {
                         <FaShareAlt />
                       </button>
                       <button className="px-3 py-2 bg-white text-gray-800 text-2xl rounded shadow-md hover:bg-gray-100 mx-1">
-                        <Link href={`/shop/${product.code}`}>
+                        <Link prefetch href={`/shop/${product.code}`}>
                           <FaEye />
                         </Link>
                       </button>

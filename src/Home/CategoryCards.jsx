@@ -14,7 +14,7 @@ const fallbackImages = {
   "STEAM Books": "/images/ProductImages/ABC.JPG",
   "STEAM Kits": "/images/ProductImages/stemkit.jpg",
   "STEAM Wear": "/images/ProductImages/vest.jpg",
-  "STEAM Combo": "/images/logo/logo.png",
+  "STEAM Combo": "/images/ProductImages/logo/photo-collage.png",
 };
 
 const CategoryCards = () => {
@@ -152,7 +152,7 @@ if (loading) return (
               <li>Copying & Activity Book</li>
             </ul>
             <button className="bg-indigo-600 text-white px-8 py-3 rounded-md mt-6 font-semibold hover:bg-gray-700 hover:scale-105 transition-transform duration-300">
-              <Link href="/shop?category=STEAM%20Books">Shop Now</Link>
+              <Link prefetch href="/shop?category=STEAM%20Books">Shop Now</Link>
             </button>
           </div>
         </div>

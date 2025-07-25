@@ -30,11 +30,11 @@ const items = [
     url: "/admin/user-management",
     icon: Users,
   },
-  {
-    title: "Reports and Analytics",
-    url: "#",
-    icon: BarChart,
-  },
+  // {
+  //   title: "Reports and Analytics",
+  //   url: "#",
+  //   icon: BarChart,
+  // },
   {
     title: "Products Management",
     url: "/studio/structure",

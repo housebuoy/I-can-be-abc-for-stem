@@ -20,6 +20,13 @@ const categorySchema = {
         type: "image",
         validation: (Rule) => Rule.required(),
     },
+    {
+      name: "order",
+      title: "Display Order",
+      type: "number",
+      validation: (Rule) => Rule.required().min(1).max(100),
+      description: "Lower numbers appear first",
+    },
     ],
   };
   

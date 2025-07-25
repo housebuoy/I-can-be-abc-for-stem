@@ -122,11 +122,12 @@ export async function getProductsCount(sortOption = "default") {
 
 export async function getCategories() {
   const query = `
-    *[_type == "category"] {
+    *[_type == "category"] | order(order asc) {
       _id,
       title,
       description,
-      "imageUrl": image.asset->url
+      "imageUrl": image.asset->url,
+      order
     }
   `;
   

@@ -7,10 +7,13 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import { auth } from '../../../../firebase';
 import withAdminAuth from "@/lib/withAdminAuth";
+import { useRouter } from "next/navigation";
 
 function Dashboard() {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
 
     useEffect(() => {
         async function fetchTransactions() {
@@ -60,6 +63,11 @@ function Dashboard() {
       
         fetchTransactions();
       }, []);
+
+      const handleViewOrder = (transactionId) => {
+        // Redirect to the dynamic page for this order using the transactionId
+        router.push(`/admin/order-management/${transactionId}`);
+      };
       
 
   return (
@@ -111,7 +119,10 @@ function Dashboard() {
                                 ) : (
                                     // Data rows
                                     transactions?.map((transaction) => (
-                                    <tr key={transaction._id}>
+                                    <tr key={transaction._id}
+                                      onClick={() => handleViewOrder(transaction.transactionId)}
+                                      className="cursor-pointer hover:bg-gray-100 transition duration-200"
+                                    >
                                         <td className="px-6 py-4 whitespace-nowrap">{transaction?.transactionId}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{transaction?.shippingDetails.fullName}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">¢{transaction?.total}</td>

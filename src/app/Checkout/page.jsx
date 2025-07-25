@@ -5,13 +5,17 @@ import { getProductByCode, getCouponByCode } from "../../sanity/schemaTypes/quer
 import { auth } from "../../../firebase";
 import { ToastContainer, toast } from 'react-toastify';
 import { MdDeleteForever } from "react-icons/md";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const Checkout = () => {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, setCartItems } = useCart();
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const notify = (transactionId) => 
-    toast.info(`Order placed successfully! Transaction ID: ${transactionId}`);  
+    toast.success(`Order placed successfully! Transaction ID: ${transactionId}. You can view it in your dashboard .`
+      
+    );  
   const user = auth.currentUser;
   const [shippingDetails, setShippingDetails] = useState({
     fullName: user?.displayName || "",
@@ -78,36 +82,6 @@ const handlePaystackPayment = () => {
   handler.openIframe(); // Open Paystack payment popup
 };
 
-
-
-  // const initializePayment = usePaystackPayment(config);
-
-  // const handlePayment = () => {
-  //   if (!user?.email) {
-  //     alert("User email is required for payment.");
-  //     return;
-  //   }
-  //   if (!shippingDetails.fullName || !shippingDetails.address || !shippingDetails.phone) {
-  //     alert("Please fill in all required shipping details.");
-  //     return;
-  //   }
-  
-  //   setLoading(true); // Start the loading state
-  
-  //   initializePayment(
-  //     (response) => {
-  //       console.log("Payment Successful", response);
-  //       setLoading(false); // End loading state
-  //       // saveOrder(response.reference); // Save order details after successful payment
-  //     },
-  //     (error) => {
-  //       console.error("Payment Failed", error);
-  //       setLoading(false); // End loading state
-  //       alert("Payment failed. Please try again.");
-  //     }
-  //   );
-  // };
-  
   
   // Save order details to the backend
   const saveOrder = async (paymentReference) => {
@@ -142,9 +116,18 @@ const handlePaystackPayment = () => {
         }
 
         const responseData = await response.json();
-        console.log("Order saved successfully:", responseData);
 
+        setCartItems([]); // from useCart context
+
+        // ✅ Clear Cart (backend)
+        await fetch("/api/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?.uid, cartItems: [] }),
+        });
+        console.log("Order saved successfully:", responseData);
         notify(transactionId)
+        router.push("/shop");
     } catch (error) {
         console.error("Error saving order:", error.message);
         alert("Failed to save order. Please contact support.");

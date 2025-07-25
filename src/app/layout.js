@@ -7,6 +7,7 @@ import { SearchProvider } from "@/app/Context/SearchContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
+  display: 'swap',
   weight: ["400"], // Add desired font weights
 });
 
