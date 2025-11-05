@@ -43,6 +43,17 @@ const Checkout = () => {
     setShippingDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
   };
 
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+        if (!currentUser) {
+          sessionStorage.setItem("auth-expired", "true");
+          router.replace("/login");
+        }
+      });
+  
+      return () => unsubscribe();
+    }, );
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.paystack.co/v1/inline.js";
@@ -229,7 +240,7 @@ const handlePaystackPayment = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-24">
-      <ToastContainer />
+      
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Checkout</h1>
 

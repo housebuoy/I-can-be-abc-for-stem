@@ -41,7 +41,7 @@ const withAdminAuth = (WrappedComponent) => {
           // Check for admin role
           if (token.claims.role !== "admin") {
             console.error("Role validation failed. Claims:", token.claims);
-            router.push("/not-authorized");
+            router.replace("/not-authorized");
             return;
           }
     

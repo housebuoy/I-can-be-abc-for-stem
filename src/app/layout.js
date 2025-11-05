@@ -4,6 +4,8 @@ import LayoutWrapper from "@/app/ClientLayout";
 import { CartProvider } from "@/app/Context/CartProvider";
 import { Poppins } from "next/font/google";
 import { SearchProvider } from "@/app/Context/SearchContext";
+import React from "react";
+import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -35,6 +37,7 @@ export default function RootLayout({ children }) {
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased ${poppins.className}`}
           >
+            <ToastContainer />
             <LayoutWrapper>{children}</LayoutWrapper>
           </body>
         </html>

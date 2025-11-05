@@ -1,12 +1,13 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import signUpImage from '../../../public/images/signup/side-picture.svg';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';  // Import useRouter to handle redirects
 import { signInWithEmailAndPassword, sendPasswordResetEmail, getAuth } from 'firebase/auth';
 import { auth } from '../../../firebase';
 import Link from 'next/link';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const LoginPage = () => {
@@ -18,6 +19,13 @@ const LoginPage = () => {
     const [success, setSuccess] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const router = useRouter(); // To redirect after successful login
+
+    useEffect(() => {
+        if (sessionStorage.getItem("auth-expired") === "true") {
+            toast.warn("Session expired. Please login again.");
+            sessionStorage.removeItem("auth-expired");
+        }
+    }, []);
 
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
@@ -70,6 +78,7 @@ const LoginPage = () => {
 
     return (
         <div className="flex min-h-screen z-50">
+           
             {/* Left Section */}
             <div className="flex-1 sm:flex flex-col justify-center items-center text-white px-10 bg-indigo-600 hidden">
                 <h1 className="text-3xl font-bold mb-4 text-center">Welcome back! <br /> Login to explore STEM!</h1>

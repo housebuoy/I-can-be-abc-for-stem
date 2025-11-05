@@ -22,7 +22,7 @@ const ShoppingCart = ({ isOpen, onClose }) => {
         setUser(currentUser);
       } else {
         setUser(null);
-        router.push("/login"); // Redirect to login if not logged in
+        router.replace("/login"); // Redirect to login if not logged in
       }
     });
 
