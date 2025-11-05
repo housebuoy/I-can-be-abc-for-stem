@@ -18,7 +18,7 @@ const SignUpPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(true);
     const router = useRouter(); 
 
 
@@ -188,6 +188,7 @@ const SignUpPage = () => {
               <input
                 type="checkbox"
                 id="terms"
+                checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
